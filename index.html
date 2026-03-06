@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyStreak</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="header-left">
+                <h1 class="site-title">DailyStreak</h1>
+                <p class="site-tagline">Daily music games, every day</p>
+            </div>
+            <div class="streak-display">
+                <div class="streak-icon">🔥</div>
+                <div>
+                    <div class="streak-number" id="streakCount">0</div>
+                    <div class="streak-label">day streak</div>
+                </div>
+            </div>
+        </div>
+        <div class="date-bar">
+            <span id="todayDate"></span>
+            <span class="dot">•</span>
+            <span id="gamesCompletedText"></span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="games-grid" id="gamesGrid"></div>
+    </main>
+
+    <footer class="site-footer">
+        <p>New games every day at midnight</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+// ============================================
+// SONG DATABASE
+// To add songs: copy an existing entry and fill in the details.
+// audioUrl: a direct link to an MP3/audio file for this song.
+//           Leave as "" for now — you'll add these later.
+// ============================================
+const SONGS = [
+    { title: "Blinding Lights",                    artist: "The Weeknd",                         audioUrl: "", year: 2019 },
+    { title: "Shape of You",                       artist: "Ed Sheeran",                         audioUrl: "", year: 2017 },
+    { title: "Dance Monkey",                       artist: "Tones and I",                        audioUrl: "", year: 2019 },
+    { title: "Stay",                               artist: "The Kid LAROI & Justin Bieber",       audioUrl: "", year: 2021 },
+    { title: "Levitating",                         artist: "Dua Lipa",                           audioUrl: "", year: 2020 },
+    { title: "drivers license",                    artist: "Olivia Rodrigo",                     audioUrl: "", year: 2021 },
+    { title: "Watermelon Sugar",                   artist: "Harry Styles",                       audioUrl: "", year: 2019 },
+    { title: "good 4 u",                           artist: "Olivia Rodrigo",                     audioUrl: "", year: 2021 },
+    { title: "Heat Waves",                         artist: "Glass Animals",                      audioUrl: "", year: 2020 },
+    { title: "Easy On Me",                         artist: "Adele",                              audioUrl: "", year: 2021 },
+    { title: "As It Was",                          artist: "Harry Styles",                       audioUrl: "", year: 2022 },
+    { title: "Anti-Hero",                          artist: "Taylor Swift",                       audioUrl: "", year: 2022 },
+    { title: "Flowers",                            artist: "Miley Cyrus",                        audioUrl: "", year: 2023 },
+    { title: "Cruel Summer",                       artist: "Taylor Swift",                       audioUrl: "", year: 2019 },
+    { title: "Kill Bill",                          artist: "SZA",                                audioUrl: "", year: 2022 },
+    { title: "Golden Hour",                        artist: "JVKE",                               audioUrl: "", year: 2022 },
+    { title: "Calm Down",                          artist: "Rema & Selena Gomez",                audioUrl: "", year: 2022 },
+    { title: "Industry Baby",                      artist: "Lil Nas X & Jack Harlow",            audioUrl: "", year: 2021 },
+    { title: "Unholy",                             artist: "Sam Smith & Kim Petras",             audioUrl: "", year: 2022 },
+    { title: "Escapism.",                          artist: "RAYE ft. 070 Shake",                 audioUrl: "", year: 2022 },
+    { title: "Montero (Call Me By Your Name)",     artist: "Lil Nas X",                          audioUrl: "", year: 2021 },
+    { title: "Peaches",                            artist: "Justin Bieber ft. Daniel Caesar",    audioUrl: "", year: 2021 },
+    { title: "Save Your Tears",                    artist: "The Weeknd",                         audioUrl: "", year: 2021 },
+    { title: "abcdefu",                            artist: "GAYLE",                              audioUrl: "", year: 2021 },
+    { title: "Butter",                             artist: "BTS",                                audioUrl: "", year: 2021 },
+];
+
+// How many seconds are revealed per attempt (1, 2, 4, 7, 11, 16)
+const CLIP_LENGTHS = [1, 2, 4, 7, 11, 16];
+const MAX_ATTEMPTS = 6;
+
+// ============================================
+// PICK TODAY'S SONG (same for everyone each day)
+// ============================================
+const todaySong = SONGS[getDailyIndex(SONGS)];
+
+// ============================================
+// LOAD / SAVE GAME STATE
+// ============================================
+const SAVE_KEY = 'heardle_' + getTodayString();
+
+function loadState() {
+    return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null') || {
+        attempt: 0,
+        guesses: [],
+        gameOver: false,
+        won: false
+    };
+}
+
+function saveState(state) {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+}
+
+let state = loadState();
+
+// ============================================
+// AUDIO PLAYER
+// ============================================
+const audio     = document.getElementById('audioPlayer');
+const playBtn   = document.getElementById('playBtn');
+const clipLabel = document.getElementById('clipSeconds');
+
+if (todaySong.audioUrl) {
+    audio.src = todaySong.audioUrl;
+} else {
+    document.getElementById('audioNote').textContent =
+        '(Audio not yet added for this song — guessing still works!)';
+}
+
+playBtn.addEventListener('click', () => {
+    if (!todaySong.audioUrl) return;
+    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
+    audio.currentTime = 0;
+    audio.play();
+    playBtn.disabled = true;
+    setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        playBtn.disabled = false;
+    }, seconds * 1000);
+});
+
+// ============================================
+// AUTOCOMPLETE
+// ============================================
+const guessInput   = document.getElementById('guessInput');
+const autocomplete = document.getElementById('autocomplete');
+
+guessInput.addEventListener('input', () => {
+    const val = guessInput.value.toLowerCase().trim();
+    autocomplete.innerHTML = '';
+    if (!val) return;
+
+    const matches = SONGS.filter(s =>
+        s.title.toLowerCase().includes(val) ||
+        s.artist.toLowerCase().includes(val)
+    ).slice(0, 6);
+
+    matches.forEach(song => {
+        const item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        item.textContent = `${song.title} — ${song.artist}`;
+        item.addEventListener('click', () => {
+            guessInput.value = `${song.title} — ${song.artist}`;
+            autocomplete.innerHTML = '';
+        });
+        autocomplete.appendChild(item);
+    });
+});
+
+// ============================================
+// SUBMIT GUESS
+// ============================================
+function submitGuess(skipped) {
+    if (state.gameOver) return;
+    const raw = guessInput.value.trim();
+    if (!skipped && !raw) return;
+
+    const correct = !skipped &&
+        raw.toLowerCase().includes(todaySong.title.toLowerCase());
+
+    state.guesses.push({
+        text: skipped ? '(skipped)' : raw,
+        correct,
+        skipped
+    });
+    state.attempt++;
+
+    if (correct || state.attempt >= MAX_ATTEMPTS) {
+        state.gameOver = true;
+        state.won = correct;
+        markGamePlayed('heardle');
+    }
+
+    guessInput.value = '';
+    autocomplete.innerHTML = '';
+    saveState(state);
+    render();
+}
+
+document.getElementById('submitBtn').addEventListener('click', () => submitGuess(false));
+document.getElementById('skipBtn').addEventListener('click',   () => submitGuess(true));
+guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(false); });
+
+// ============================================
+// RENDER
+// ============================================
+function render() {
+    // Update clip length label
+    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
+    clipLabel.textContent = seconds;
+
+    // Attempt dots
+    const dotsEl = document.getElementById('attemptsDisplay');
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'attempt-dot';
+        if (i < state.guesses.length) {
+            const g = state.guesses[i];
+            dot.classList.add(g.correct ? 'correct' : g.skipped ? 'skipped' : 'wrong');
+            dot.textContent = g.correct ? '✓' : g.skipped ? '–' : '✗';
+        }
+        dotsEl.appendChild(dot);
+    }
+
+    // Guesses list
+    const listEl = document.getElementById('guessesList');
+    listEl.innerHTML = '';
+    state.guesses.forEach(g => {
+        const el = document.createElement('div');
+        el.className = `guess-item ${g.correct ? 'correct' : g.skipped ? 'skipped' : 'wrong'}`;
+        el.textContent = g.text;
+        listEl.appendChild(el);
+    });
+
+    // Game over
+    if (state.gameOver) {
+        document.getElementById('inputSection').style.display = 'none';
+        const box = document.getElementById('resultBox');
+        box.style.display = 'block';
+        box.className = `result-box ${state.won ? 'win' : 'lose'}`;
+        box.innerHTML = state.won
+            ? `<h3>Nice one! 🎉</h3>
+               <p>You got it in <strong>${state.attempt}</strong> guess${state.attempt !== 1 ? 'es' : ''}!</p>
+               <p class="answer-reveal">${todaySong.title} — ${todaySong.artist}</p>
+               <a href="../../index.html" class="back-home-btn">Back to Games</a>`
+            : `<h3>Better luck tomorrow!</h3>
+               <p>The song was:</p>
+               <p class="answer-reveal">${todaySong.title} — ${todaySong.artist}</p>
+               <a href="../../index.html" class="back-home-btn">Back to Games</a>`;
+    }
+}
+
+render();

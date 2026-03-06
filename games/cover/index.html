@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover - DailyStreak</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🎨 Cover</h2>
+    </header>
+
+    <div class="game-container">
+        <p class="game-subtitle">Guess the song from its album cover</p>
+
+        <div class="cover-image-wrap">
+            <div class="cover-placeholder" id="coverWrap">🎵</div>
+        </div>
+
+        <div class="attempts-display" id="attemptsDisplay"></div>
+        <div class="guesses-list" id="guessesList"></div>
+
+        <div id="inputSection">
+            <div class="guess-input-wrap">
+                <input type="text" class="guess-input" id="guessInput"
+                    placeholder="Type a song name..." autocomplete="off">
+            </div>
+            <div class="autocomplete-dropdown" id="autocomplete"></div>
+            <div class="action-buttons">
+                <button class="btn btn-skip" id="skipBtn">Skip</button>
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
+            </div>
+        </div>
+
+        <div class="result-box" id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="../../js/app.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
