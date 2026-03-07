@@ -186,28 +186,34 @@ function choose(guess, clickedSide) {
     // If streams are equal, both answers count as correct
     const correct = right.streams === left.streams || guess === (right.streams > left.streams ? 'higher' : 'lower');
 
-    // Instantly reveal left card, count up right card
-    document.getElementById('cardLeftStreams').textContent = formatStreams(left.streams);
-    const streamsEl = document.getElementById('cardRightStreams');
-    const clickedEl = document.getElementById(clickedSide === 'left' ? 'cardLeft' : 'cardRight');
+    // Count up the clicked card first, then the other card, then show result
+    const clickedSong   = clickedSide === 'left' ? left : right;
+    const otherSong     = clickedSide === 'left' ? right : left;
+    const clickedEl     = document.getElementById(clickedSide === 'left' ? 'cardLeft' : 'cardRight');
+    const otherEl       = document.getElementById(clickedSide === 'left' ? 'cardRight' : 'cardLeft');
+    const clickedStreams = document.getElementById(clickedSide === 'left' ? 'cardLeftStreams' : 'cardRightStreams');
+    const otherStreams   = document.getElementById(clickedSide === 'left' ? 'cardRightStreams' : 'cardLeftStreams');
 
-    animateCount(streamsEl, right.streams, () => {
-        // Only the card the user clicked changes colour
-        clickedEl.classList.add(correct ? 'hl-pop-correct' : 'hl-pop-wrong');
+    // Step 1: count up clicked card
+    animateCount(clickedStreams, clickedSong.streams, () => {
+        // Step 2: count up the other card
+        animateCount(otherStreams, otherSong.streams, () => {
+            // Step 3: show result on clicked card
+            clickedEl.classList.add(correct ? 'hl-pop-correct' : 'hl-pop-wrong');
 
-        if (correct) {
-            state.score++;
-            state.index++;
-            if (state.index >= orderedSongs.length) state.index = 1;
-            saveState(state);
-            // Auto-advance after animation
-            setTimeout(renderQuestion, 1600);
-        } else {
-            state.gameOver = true;
-            markGamePlayed('higher-lower');
-            saveState(state);
-            setTimeout(showResult, 1600);
-        }
+            if (correct) {
+                state.score++;
+                state.index++;
+                if (state.index >= orderedSongs.length) state.index = 1;
+                saveState(state);
+                setTimeout(renderQuestion, 1600);
+            } else {
+                state.gameOver = true;
+                markGamePlayed('higher-lower');
+                saveState(state);
+                setTimeout(showResult, 1600);
+            }
+        });
     });
 }
 
