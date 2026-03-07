@@ -81,41 +81,33 @@ const audioNote = document.getElementById('audioNote');
 playBtn.disabled = true;
 audioNote.textContent = 'Loading audio...';
 
+const progressBar = document.getElementById('progressBar');
+let previewUrl = null;
+
 fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
     if (url) {
+        previewUrl = url;
+        audio.preload = 'auto';
         audio.src = url;
-        audio.load();
         audioNote.textContent = '30-second preview via iTunes';
-        // Only enable the button once audio is actually ready to play
-        audio.addEventListener('canplay', () => {
-            playBtn.disabled = false;
-        }, { once: true });
+        playBtn.disabled = false;
     } else {
         audioNote.textContent = 'Audio unavailable for this song — guessing still works!';
     }
 });
 
-const progressBar = document.getElementById('progressBar');
-
 function startClip(seconds) {
     playBtn.disabled = true;
     playBtn.textContent = '▶ Playing...';
-
     progressBar.style.transition = 'none';
     progressBar.style.width = '0%';
 
-    audio.play().catch(() => {
-        playBtn.disabled = false;
-        playBtn.textContent = '▶ Play Clip';
-    });
-
-    // Start the timer only once audio is actually playing, not just when play() is called
-    audio.addEventListener('playing', () => {
+    audio.play().then(() => {
+        // Audio confirmed playing — start progress bar and clip timer
         requestAnimationFrame(() => {
             progressBar.style.transition = `width ${seconds}s linear`;
             progressBar.style.width = '100%';
         });
-
         setTimeout(() => {
             audio.pause();
             audio.currentTime = 0;
@@ -124,14 +116,19 @@ function startClip(seconds) {
             progressBar.style.transition = 'none';
             progressBar.style.width = '0%';
         }, seconds * 1000);
-    }, { once: true });
+    }).catch(() => {
+        // Play failed — reload audio and try once more
+        audio.src = previewUrl;
+        audio.load();
+        audio.addEventListener('canplay', () => {
+            startClip(seconds);
+        }, { once: true });
+    });
 }
 
 playBtn.addEventListener('click', () => {
-    if (!audio.src) return;
+    if (!previewUrl) return;
     const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
-
-    // If audio needs to seek back to start, wait for it before playing
     if (audio.currentTime > 0) {
         audio.currentTime = 0;
         audio.addEventListener('seeked', () => startClip(seconds), { once: true });
