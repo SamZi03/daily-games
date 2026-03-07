@@ -171,31 +171,28 @@ async function renderQuestion() {
 
     // Clicking left card = guessing left has more (right is lower)
     // Clicking right card = guessing right has more (right is higher)
-    document.getElementById('cardLeft').addEventListener('click',  () => choose('lower'));
-    document.getElementById('cardRight').addEventListener('click', () => choose('higher'));
+    document.getElementById('cardLeft').addEventListener('click',  () => choose('lower',  'left'));
+    document.getElementById('cardRight').addEventListener('click', () => choose('higher', 'right'));
 }
 
 // ============================================
 // CHOOSE
 // ============================================
-function choose(guess) {
+function choose(guess, clickedSide) {
     if (busy || state.gameOver) return;
     busy = true;
 
-    const left  = leftSong();
-    const right = rightSong();
+    const left    = leftSong();
+    const right   = rightSong();
     const correct = guess === (right.streams >= left.streams ? 'higher' : 'lower');
 
     // Count up the right card's streams
-    const streamsEl   = document.getElementById('cardRightStreams');
-    const cardLeftEl  = document.getElementById('cardLeft');
-    const cardRightEl = document.getElementById('cardRight');
-    const rightIsHigher = right.streams >= left.streams;
+    const streamsEl = document.getElementById('cardRightStreams');
+    const clickedEl = document.getElementById(clickedSide === 'left' ? 'cardLeft' : 'cardRight');
 
     animateCount(streamsEl, right.streams, () => {
-        // Green on the card with MORE streams, red on the other
-        cardLeftEl.classList.add(rightIsHigher  ? 'hl-pop-wrong'   : 'hl-pop-correct');
-        cardRightEl.classList.add(rightIsHigher ? 'hl-pop-correct' : 'hl-pop-wrong');
+        // Only the card the user clicked changes colour
+        clickedEl.classList.add(correct ? 'hl-pop-correct' : 'hl-pop-wrong');
 
         if (correct) {
             state.score++;
