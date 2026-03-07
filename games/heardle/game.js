@@ -1,63 +1,71 @@
 // ============================================
 // SONG DATABASE
-// To add songs: copy an existing entry and fill in the details.
-// audioUrl: a direct link to an MP3/audio file for this song.
-//           Leave as "" for now — you'll add these later.
+// The game automatically fetches a 30-second preview
+// from iTunes (free & legal) — no URLs needed!
+// Just add: title, artist, year
 // ============================================
 const SONGS = [
-    { title: "Blinding Lights",                    artist: "The Weeknd",                         audioUrl: "", year: 2019 },
-    { title: "Shape of You",                       artist: "Ed Sheeran",                         audioUrl: "", year: 2017 },
-    { title: "Dance Monkey",                       artist: "Tones and I",                        audioUrl: "", year: 2019 },
-    { title: "Stay",                               artist: "The Kid LAROI & Justin Bieber",       audioUrl: "", year: 2021 },
-    { title: "Levitating",                         artist: "Dua Lipa",                           audioUrl: "", year: 2020 },
-    { title: "drivers license",                    artist: "Olivia Rodrigo",                     audioUrl: "", year: 2021 },
-    { title: "Watermelon Sugar",                   artist: "Harry Styles",                       audioUrl: "", year: 2019 },
-    { title: "good 4 u",                           artist: "Olivia Rodrigo",                     audioUrl: "", year: 2021 },
-    { title: "Heat Waves",                         artist: "Glass Animals",                      audioUrl: "", year: 2020 },
-    { title: "Easy On Me",                         artist: "Adele",                              audioUrl: "", year: 2021 },
-    { title: "As It Was",                          artist: "Harry Styles",                       audioUrl: "", year: 2022 },
-    { title: "Anti-Hero",                          artist: "Taylor Swift",                       audioUrl: "", year: 2022 },
-    { title: "Flowers",                            artist: "Miley Cyrus",                        audioUrl: "", year: 2023 },
-    { title: "Cruel Summer",                       artist: "Taylor Swift",                       audioUrl: "", year: 2019 },
-    { title: "Kill Bill",                          artist: "SZA",                                audioUrl: "", year: 2022 },
-    { title: "Golden Hour",                        artist: "JVKE",                               audioUrl: "", year: 2022 },
-    { title: "Calm Down",                          artist: "Rema & Selena Gomez",                audioUrl: "", year: 2022 },
-    { title: "Industry Baby",                      artist: "Lil Nas X & Jack Harlow",            audioUrl: "", year: 2021 },
-    { title: "Unholy",                             artist: "Sam Smith & Kim Petras",             audioUrl: "", year: 2022 },
-    { title: "Escapism.",                          artist: "RAYE ft. 070 Shake",                 audioUrl: "", year: 2022 },
-    { title: "Montero (Call Me By Your Name)",     artist: "Lil Nas X",                          audioUrl: "", year: 2021 },
-    { title: "Peaches",                            artist: "Justin Bieber ft. Daniel Caesar",    audioUrl: "", year: 2021 },
-    { title: "Save Your Tears",                    artist: "The Weeknd",                         audioUrl: "", year: 2021 },
-    { title: "abcdefu",                            artist: "GAYLE",                              audioUrl: "", year: 2021 },
-    { title: "Butter",                             artist: "BTS",                                audioUrl: "", year: 2021 },
+    { title: "Blinding Lights",                artist: "The Weeknd",                   year: 2019 },
+    { title: "Shape of You",                   artist: "Ed Sheeran",                   year: 2017 },
+    { title: "Dance Monkey",                   artist: "Tones and I",                  year: 2019 },
+    { title: "Stay",                           artist: "The Kid LAROI",                year: 2021 },
+    { title: "Levitating",                     artist: "Dua Lipa",                     year: 2020 },
+    { title: "drivers license",                artist: "Olivia Rodrigo",               year: 2021 },
+    { title: "Watermelon Sugar",               artist: "Harry Styles",                 year: 2019 },
+    { title: "good 4 u",                       artist: "Olivia Rodrigo",               year: 2021 },
+    { title: "Heat Waves",                     artist: "Glass Animals",                year: 2020 },
+    { title: "Easy On Me",                     artist: "Adele",                        year: 2021 },
+    { title: "As It Was",                      artist: "Harry Styles",                 year: 2022 },
+    { title: "Anti-Hero",                      artist: "Taylor Swift",                 year: 2022 },
+    { title: "Flowers",                        artist: "Miley Cyrus",                  year: 2023 },
+    { title: "Cruel Summer",                   artist: "Taylor Swift",                 year: 2019 },
+    { title: "Kill Bill",                      artist: "SZA",                          year: 2022 },
+    { title: "Golden Hour",                    artist: "JVKE",                         year: 2022 },
+    { title: "Calm Down",                      artist: "Rema",                         year: 2022 },
+    { title: "Industry Baby",                  artist: "Lil Nas X",                    year: 2021 },
+    { title: "Unholy",                         artist: "Sam Smith",                    year: 2022 },
+    { title: "Montero",                        artist: "Lil Nas X",                    year: 2021 },
+    { title: "Save Your Tears",                artist: "The Weeknd",                   year: 2021 },
+    { title: "abcdefu",                        artist: "GAYLE",                        year: 2021 },
+    { title: "Butter",                         artist: "BTS",                          year: 2021 },
+    { title: "Sunflower",                      artist: "Post Malone",                  year: 2018 },
+    { title: "Bad Guy",                        artist: "Billie Eilish",                year: 2019 },
 ];
 
-// How many seconds are revealed per attempt (1, 2, 4, 7, 11, 16)
+// Seconds of audio revealed per attempt
 const CLIP_LENGTHS = [1, 2, 4, 7, 11, 16];
 const MAX_ATTEMPTS = 6;
 
-// ============================================
-// PICK TODAY'S SONG (same for everyone each day)
-// ============================================
 const todaySong = SONGS[getDailyIndex(SONGS)];
+const SAVE_KEY  = 'heardle_' + getTodayString();
 
 // ============================================
-// LOAD / SAVE GAME STATE
+// ITUNES API — fetches a free legal 30s preview
 // ============================================
-const SAVE_KEY = 'heardle_' + getTodayString();
+async function fetchPreviewUrl(title, artist) {
+    try {
+        const query = encodeURIComponent(`${title} ${artist}`);
+        const res   = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=5`);
+        const data  = await res.json();
+        const match = data.results.find(r =>
+            r.trackName.toLowerCase().includes(title.toLowerCase())
+        ) || data.results[0];
+        return match ? match.previewUrl : null;
+    } catch {
+        return null;
+    }
+}
 
+// ============================================
+// STATE
+// ============================================
 function loadState() {
     return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null') || {
-        attempt: 0,
-        guesses: [],
-        gameOver: false,
-        won: false
+        attempt: 0, guesses: [], gameOver: false, won: false
     };
 }
 
-function saveState(state) {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
-}
+function saveState(s) { localStorage.setItem(SAVE_KEY, JSON.stringify(s)); }
 
 let state = loadState();
 
@@ -67,24 +75,34 @@ let state = loadState();
 const audio     = document.getElementById('audioPlayer');
 const playBtn   = document.getElementById('playBtn');
 const clipLabel = document.getElementById('clipSeconds');
+const audioNote = document.getElementById('audioNote');
 
-if (todaySong.audioUrl) {
-    audio.src = todaySong.audioUrl;
-} else {
-    document.getElementById('audioNote').textContent =
-        '(Audio not yet added for this song — guessing still works!)';
-}
+// Load preview on startup
+playBtn.disabled = true;
+audioNote.textContent = 'Loading audio...';
+
+fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
+    if (url) {
+        audio.src = url;
+        playBtn.disabled = false;
+        audioNote.textContent = '30-second preview via iTunes';
+    } else {
+        audioNote.textContent = 'Audio unavailable for this song — guessing still works!';
+    }
+});
 
 playBtn.addEventListener('click', () => {
-    if (!todaySong.audioUrl) return;
+    if (!audio.src) return;
     const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
     audio.currentTime = 0;
     audio.play();
     playBtn.disabled = true;
+    playBtn.textContent = '▶ Playing...';
     setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
         playBtn.disabled = false;
+        playBtn.textContent = '▶ Play Clip';
     }, seconds * 1000);
 });
 
@@ -127,11 +145,7 @@ function submitGuess(skipped) {
     const correct = !skipped &&
         raw.toLowerCase().includes(todaySong.title.toLowerCase());
 
-    state.guesses.push({
-        text: skipped ? '(skipped)' : raw,
-        correct,
-        skipped
-    });
+    state.guesses.push({ text: skipped ? '(skipped)' : raw, correct, skipped });
     state.attempt++;
 
     if (correct || state.attempt >= MAX_ATTEMPTS) {
@@ -154,9 +168,7 @@ guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess
 // RENDER
 // ============================================
 function render() {
-    // Update clip length label
-    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
-    clipLabel.textContent = seconds;
+    clipLabel.textContent = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
 
     // Attempt dots
     const dotsEl = document.getElementById('attemptsDisplay');

@@ -1,92 +1,81 @@
 // ============================================
 // SONG DATABASE FOR COVER GAME
-//
-// HOW TO ADD A SONG:
-// 1. Find the album cover image online (Google Images: "Shape of You album cover")
-// 2. Right-click → Copy image address  (or save and host the file)
-// 3. Paste the URL into coverUrl below
-//
-// The image starts fully blurred and gets clearer with each wrong guess
+// Album artwork is fetched automatically from iTunes (free & legal)
+// Just add: title, artist
 // ============================================
 const SONGS = [
-    {
-        title: "As It Was",
-        artist: "Harry Styles",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Anti-Hero",
-        artist: "Taylor Swift",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Flowers",
-        artist: "Miley Cyrus",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Blinding Lights",
-        artist: "The Weeknd",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Shape of You",
-        artist: "Ed Sheeran",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Heat Waves",
-        artist: "Glass Animals",
-        coverUrl: "" // Paste image URL here
-    },
-    {
-        title: "Cruel Summer",
-        artist: "Taylor Swift",
-        coverUrl: "" // Paste image URL here
-    },
+    { title: "As It Was",       artist: "Harry Styles"   },
+    { title: "Anti-Hero",       artist: "Taylor Swift"   },
+    { title: "Flowers",         artist: "Miley Cyrus"    },
+    { title: "Blinding Lights", artist: "The Weeknd"     },
+    { title: "Shape of You",    artist: "Ed Sheeran"     },
+    { title: "Heat Waves",      artist: "Glass Animals"  },
+    { title: "Cruel Summer",    artist: "Taylor Swift"   },
+    { title: "Bad Guy",         artist: "Billie Eilish"  },
+    { title: "Levitating",      artist: "Dua Lipa"       },
+    { title: "Sunflower",       artist: "Post Malone"    },
 ];
 
-// Blur levels per attempt (starts very blurry, clears up each guess)
-const BLUR_LEVELS = [20, 16, 12, 8, 4, 0];
+// Blur levels — starts very blurry, clears with each wrong guess
+const BLUR_LEVELS = [22, 18, 13, 8, 4, 0];
 const MAX_ATTEMPTS = 6;
 const SAVE_KEY = 'cover_' + getTodayString();
 
 const todaySong = SONGS[getDailyIndex(SONGS)];
 
 // ============================================
+// ITUNES API — fetches album artwork for free
+// ============================================
+async function fetchArtworkUrl(title, artist) {
+    try {
+        const query = encodeURIComponent(`${title} ${artist}`);
+        const res   = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=5`);
+        const data  = await res.json();
+        const match = data.results.find(r =>
+            r.trackName.toLowerCase().includes(title.toLowerCase())
+        ) || data.results[0];
+        if (!match) return null;
+        // Replace 100x100 thumbnail with 600x600 for better quality
+        return match.artworkUrl100.replace('100x100', '600x600');
+    } catch {
+        return null;
+    }
+}
+
+// ============================================
 // STATE
 // ============================================
 function loadState() {
     return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null') || {
-        attempt: 0,
-        guesses: [],
-        gameOver: false,
-        won: false
+        attempt: 0, guesses: [], gameOver: false, won: false
     };
 }
 
-function saveState(s) {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(s));
-}
+function saveState(s) { localStorage.setItem(SAVE_KEY, JSON.stringify(s)); }
 
 let state = loadState();
+let coverImg = null;
 
 // ============================================
 // SETUP COVER IMAGE
 // ============================================
-function setupCover() {
+fetchArtworkUrl(todaySong.title, todaySong.artist).then(url => {
     const wrap = document.getElementById('coverWrap');
-    if (todaySong.coverUrl) {
-        wrap.outerHTML = `<img class="cover-image" id="coverImg" src="${todaySong.coverUrl}" alt="Album cover">`;
+    if (url) {
+        wrap.innerHTML = `<img class="cover-image" id="coverImg" src="${url}" alt="Album cover">`;
+        coverImg = document.getElementById('coverImg');
+        updateBlur();
+    } else {
+        wrap.innerHTML = `<div class="cover-placeholder">🎵</div>`;
     }
-    updateBlur();
-}
+});
 
 function updateBlur() {
-    const img = document.getElementById('coverImg');
-    if (!img) return;
-    const blur = BLUR_LEVELS[Math.min(state.attempt, BLUR_LEVELS.length - 1)];
-    img.style.filter = `blur(${blur}px)`;
+    if (!coverImg) return;
+    const blur = state.gameOver
+        ? 0
+        : BLUR_LEVELS[Math.min(state.attempt, BLUR_LEVELS.length - 1)];
+    coverImg.style.filter = `blur(${blur}px)`;
 }
 
 // ============================================
@@ -179,7 +168,6 @@ function render() {
 
     // Game over
     if (state.gameOver) {
-        updateBlur(); // Remove blur on game over
         document.getElementById('inputSection').style.display = 'none';
         const box = document.getElementById('resultBox');
         box.style.display = 'block';
@@ -196,5 +184,4 @@ function render() {
     }
 }
 
-setupCover();
 render();
