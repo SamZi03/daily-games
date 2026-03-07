@@ -101,25 +101,30 @@ function startClip(seconds) {
     playBtn.disabled = true;
     playBtn.textContent = '▶ Playing...';
 
-    audio.play().catch(() => {});
-
     progressBar.style.transition = 'none';
     progressBar.style.width = '0%';
-    requestAnimationFrame(() => {
+
+    audio.play().catch(() => {
+        playBtn.disabled = false;
+        playBtn.textContent = '▶ Play Clip';
+    });
+
+    // Start the timer only once audio is actually playing, not just when play() is called
+    audio.addEventListener('playing', () => {
         requestAnimationFrame(() => {
             progressBar.style.transition = `width ${seconds}s linear`;
             progressBar.style.width = '100%';
         });
-    });
 
-    setTimeout(() => {
-        audio.pause();
-        audio.currentTime = 0;
-        playBtn.disabled = false;
-        playBtn.textContent = '▶ Play Clip';
-        progressBar.style.transition = 'none';
-        progressBar.style.width = '0%';
-    }, seconds * 1000);
+        setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            playBtn.disabled = false;
+            playBtn.textContent = '▶ Play Clip';
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+        }, seconds * 1000);
+    }, { once: true });
 }
 
 playBtn.addEventListener('click', () => {
