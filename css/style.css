@@ -1,6 +1,161 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap');
 
+/* =====================
+   SIDEBAR
+   ===================== */
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+
+.hamburger:hover { background: var(--tile); }
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 300px;
+    max-width: 85vw;
+    background: #1e2022;
+    border-right: 1px solid var(--border);
+    z-index: 101;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open { transform: translateX(0); }
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.sidebar-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sidebar-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.sidebar-close:hover { color: var(--text); background: var(--tile); }
+
+.sidebar-games {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-game-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--tile);
+    border: 1px solid var(--border);
+    transition: transform 0.18s ease, border-color 0.15s, background 0.15s;
+    position: relative;
+}
+
+.sidebar-game-card:hover:not(.sidebar-coming-soon) {
+    transform: scale(1.03);
+    border-color: #555;
+    background: var(--tile2);
+}
+
+.sidebar-coming-soon {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.sidebar-game-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.sidebar-game-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.sidebar-game-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.sidebar-soon-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--muted);
+    color: var(--text);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
 * {
     margin: 0;
     padding: 0;
