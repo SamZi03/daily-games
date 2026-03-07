@@ -91,6 +91,8 @@ fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
     }
 });
 
+const progressBar = document.getElementById('progressBar');
+
 playBtn.addEventListener('click', () => {
     if (!audio.src) return;
     const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
@@ -98,11 +100,24 @@ playBtn.addEventListener('click', () => {
     audio.play();
     playBtn.disabled = true;
     playBtn.textContent = '▶ Playing...';
+
+    // Animate progress bar across the clip duration
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            progressBar.style.transition = `width ${seconds}s linear`;
+            progressBar.style.width = '100%';
+        });
+    });
+
     setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
         playBtn.disabled = false;
         playBtn.textContent = '▶ Play Clip';
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
     }, seconds * 1000);
 });
 

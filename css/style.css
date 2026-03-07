@@ -433,6 +433,22 @@ body {
     font-weight: 700;
 }
 
+.progress-bar-wrap {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), #ff6584);
+    border-radius: 999px;
+}
+
 .play-btn {
     background: var(--accent);
     color: white;
