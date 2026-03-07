@@ -194,12 +194,21 @@ function submitGuess(skipped) {
 document.getElementById('submitBtn').addEventListener('click', () => submitGuess(false));
 document.getElementById('skipBtn').addEventListener('click',   () => submitGuess(true));
 guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(false); });
+document.addEventListener('click', e => {
+    if (!guessInput.contains(e.target) && !autocomplete.contains(e.target)) {
+        autocomplete.innerHTML = '';
+    }
+});
 
 // ============================================
 // RENDER
 // ============================================
 function render() {
-    clipLabel.textContent = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
+    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
+    clipLabel.textContent = seconds < 1 ? seconds + 's' : seconds + 's';
+
+    // Hide audio section once game is over
+    document.getElementById('audioSection') && (document.querySelector('.audio-section').style.display = state.gameOver ? 'none' : 'block');
 
     // Attempt dots
     const dotsEl = document.getElementById('attemptsDisplay');

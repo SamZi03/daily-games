@@ -183,7 +183,8 @@ function choose(guess, clickedSide) {
 
     const left    = leftSong();
     const right   = rightSong();
-    const correct = guess === (right.streams >= left.streams ? 'higher' : 'lower');
+    // If streams are equal, both answers count as correct
+    const correct = right.streams === left.streams || guess === (right.streams > left.streams ? 'higher' : 'lower');
 
     // Count up the right card's streams
     const streamsEl = document.getElementById('cardRightStreams');

@@ -153,6 +153,11 @@ function submitGuess(skipped) {
 document.getElementById('submitBtn').addEventListener('click', () => submitGuess(false));
 document.getElementById('skipBtn').addEventListener('click',   () => submitGuess(true));
 guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(false); });
+document.addEventListener('click', e => {
+    if (!guessInput.contains(e.target) && !autocomplete.contains(e.target)) {
+        autocomplete.innerHTML = '';
+    }
+});
 
 // ============================================
 // RENDER
