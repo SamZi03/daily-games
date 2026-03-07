@@ -103,8 +103,8 @@
 .sidebar-game-card {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px;
+    justify-content: space-between;
+    padding: 16px 18px;
     border-radius: 10px;
     text-decoration: none;
     color: var(--text);
@@ -115,7 +115,7 @@
 }
 
 .sidebar-game-card:hover:not(.sidebar-coming-soon) {
-    transform: scale(1.03);
+    transform: scale(1.04);
     border-color: #555;
     background: var(--tile2);
 }
@@ -125,22 +125,10 @@
     cursor: not-allowed;
 }
 
-.sidebar-game-icon {
-    font-size: 26px;
-    flex-shrink: 0;
-}
-
 .sidebar-game-title {
     font-family: 'Clash Display', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-}
-
-.sidebar-game-desc {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.4;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .sidebar-soon-badge {

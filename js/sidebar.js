@@ -25,11 +25,7 @@ function buildSidebar() {
                 <a href="${base}${game.url}"
                    class="sidebar-game-card ${!game.active ? 'sidebar-coming-soon' : ''}"
                    ${!game.active ? 'onclick="return false"' : ''}>
-                    <span class="sidebar-game-icon">${game.icon}</span>
-                    <div>
-                        <div class="sidebar-game-title">${game.title}</div>
-                        <div class="sidebar-game-desc">${game.description}</div>
-                    </div>
+                    <div class="sidebar-game-title">${game.title}</div>
                     ${!game.active ? '<span class="sidebar-soon-badge">Soon</span>' : ''}
                 </a>
             `).join('')}
