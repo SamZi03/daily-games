@@ -187,12 +187,15 @@ function choose(guess) {
     const correct = guess === (right.streams >= left.streams ? 'higher' : 'lower');
 
     // Count up the right card's streams
-    const streamsEl  = document.getElementById('cardRightStreams');
+    const streamsEl   = document.getElementById('cardRightStreams');
+    const cardLeftEl  = document.getElementById('cardLeft');
     const cardRightEl = document.getElementById('cardRight');
+    const rightIsHigher = right.streams >= left.streams;
 
     animateCount(streamsEl, right.streams, () => {
-        // After count-up: flash the card green or red
-        cardRightEl.classList.add(correct ? 'hl-pop-correct' : 'hl-pop-wrong');
+        // Green on the card with MORE streams, red on the other
+        cardLeftEl.classList.add(rightIsHigher  ? 'hl-pop-wrong'   : 'hl-pop-correct');
+        cardRightEl.classList.add(rightIsHigher ? 'hl-pop-correct' : 'hl-pop-wrong');
 
         if (correct) {
             state.score++;
