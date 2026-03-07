@@ -151,4 +151,16 @@ function renderHomePage() {
     });
 }
 
+function resetForTesting() {
+    const today = getTodayString();
+    // Clear today's played games and all game saves
+    const stored = JSON.parse(localStorage.getItem('playedGames') || '{}');
+    delete stored[today];
+    localStorage.setItem('playedGames', JSON.stringify(stored));
+    ['heardle', 'higher-lower', 'cover', 'lyrics'].forEach(id => {
+        localStorage.removeItem(id + '_' + today);
+    });
+    location.reload();
+}
+
 renderHomePage();
