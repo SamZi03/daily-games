@@ -64,8 +64,7 @@ async function getArtwork(title, artist) {
 // HELPERS
 // ============================================
 function formatStreams(n) {
-    if (n >= 1000000000) return (n / 1000000000).toFixed(1) + 'B';
-    return (n / 1000000).toFixed(0) + 'M';
+    return Math.round(n).toLocaleString();
 }
 
 // Seeded daily shuffle
