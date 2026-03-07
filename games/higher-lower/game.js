@@ -111,7 +111,7 @@ function cardHTML(id, song, showStreams) {
             <div class="hl-song-title">${song.title}</div>
             <div class="hl-song-artist">${song.artist}</div>
             <div class="hl-streams" id="${id}Streams">
-                ${showStreams ? formatStreams(song.streams) + ' streams' : '?'}
+                ${showStreams ? formatStreams(song.streams) : '?'}
             </div>
         </div>
     `;
@@ -128,11 +128,11 @@ function animateCount(el, target, onDone) {
         const progress = Math.min((now - start) / duration, 1);
         const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
         const current  = target * eased;
-        el.textContent = formatStreams(current) + ' streams';
+        el.textContent = formatStreams(current);
         if (progress < 1) {
             requestAnimationFrame(step);
         } else {
-            el.textContent = formatStreams(target) + ' streams';
+            el.textContent = formatStreams(target);
             if (onDone) onDone();
         }
     }
