@@ -14,7 +14,7 @@
     </header>
 
     <div class="game-container">
-        <p class="game-subtitle">Which song has more Spotify streams?</p>
+        <p class="game-subtitle">Does the right song have more or fewer streams?</p>
 
         <div class="hl-score-bar">
             <span>Score: <strong id="scoreDisplay">0</strong></span>
@@ -23,7 +23,10 @@
 
         <div class="hl-cards" id="hlCards"></div>
 
-        <button class="hl-next-btn" id="nextBtn" style="display:none;">Next →</button>
+        <div class="hl-buttons" id="hlButtons" style="display:none;">
+            <button class="hl-btn hl-btn-higher" id="higherBtn">▲ Higher</button>
+            <button class="hl-btn hl-btn-lower"  id="lowerBtn">▼ Lower</button>
+        </div>
 
         <div class="result-box" id="resultBox" style="display:none;"></div>
     </div>
