@@ -84,8 +84,12 @@ audioNote.textContent = 'Loading audio...';
 fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
     if (url) {
         audio.src = url;
-        playBtn.disabled = false;
+        audio.load();
         audioNote.textContent = '30-second preview via iTunes';
+        // Only enable the button once audio is actually ready to play
+        audio.addEventListener('canplay', () => {
+            playBtn.disabled = false;
+        }, { once: true });
     } else {
         audioNote.textContent = 'Audio unavailable for this song — guessing still works!';
     }
@@ -93,15 +97,12 @@ fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
 
 const progressBar = document.getElementById('progressBar');
 
-playBtn.addEventListener('click', () => {
-    if (!audio.src) return;
-    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
-    audio.currentTime = 0;
-    audio.play();
+function startClip(seconds) {
     playBtn.disabled = true;
     playBtn.textContent = '▶ Playing...';
 
-    // Animate progress bar across the clip duration
+    audio.play().catch(() => {});
+
     progressBar.style.transition = 'none';
     progressBar.style.width = '0%';
     requestAnimationFrame(() => {
@@ -119,6 +120,19 @@ playBtn.addEventListener('click', () => {
         progressBar.style.transition = 'none';
         progressBar.style.width = '0%';
     }, seconds * 1000);
+}
+
+playBtn.addEventListener('click', () => {
+    if (!audio.src) return;
+    const seconds = CLIP_LENGTHS[Math.min(state.attempt, CLIP_LENGTHS.length - 1)];
+
+    // If audio needs to seek back to start, wait for it before playing
+    if (audio.currentTime > 0) {
+        audio.currentTime = 0;
+        audio.addEventListener('seeked', () => startClip(seconds), { once: true });
+    } else {
+        startClip(seconds);
+    }
 });
 
 // ============================================
