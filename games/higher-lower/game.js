@@ -155,7 +155,7 @@ async function renderQuestion() {
     const right = rightSong();
 
     document.getElementById('hlCards').innerHTML =
-        cardHTML('cardLeft', left, true) + cardHTML('cardRight', right, false);
+        cardHTML('cardLeft', left, false) + cardHTML('cardRight', right, false);
 
     // Load artwork in parallel
     const [leftUrl, rightUrl] = await Promise.all([
@@ -186,7 +186,8 @@ function choose(guess, clickedSide) {
     // If streams are equal, both answers count as correct
     const correct = right.streams === left.streams || guess === (right.streams > left.streams ? 'higher' : 'lower');
 
-    // Count up the right card's streams
+    // Instantly reveal left card, count up right card
+    document.getElementById('cardLeftStreams').textContent = formatStreams(left.streams);
     const streamsEl = document.getElementById('cardRightStreams');
     const clickedEl = document.getElementById(clickedSide === 'left' ? 'cardLeft' : 'cardRight');
 
