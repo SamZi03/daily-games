@@ -154,8 +154,10 @@ async function renderQuestion() {
     const left  = leftSong();
     const right = rightSong();
 
+    // Left card already had its streams revealed in the previous round (unless it's the first round)
+    const leftRevealed = state.index > 1;
     document.getElementById('hlCards').innerHTML =
-        cardHTML('cardLeft', left, false) + cardHTML('cardRight', right, false);
+        cardHTML('cardLeft', left, leftRevealed) + cardHTML('cardRight', right, false);
 
     // Load artwork in parallel
     const [leftUrl, rightUrl] = await Promise.all([
