@@ -33,7 +33,7 @@ const SONGS = [
 ];
 
 // Seconds of audio revealed per attempt
-const CLIP_LENGTHS = [1, 2, 4, 7, 11, 16];
+const CLIP_LENGTHS = [0.1, 0.5, 2, 4, 8, 15];
 const MAX_ATTEMPTS = 6;
 
 const todaySong = SONGS[getDailyIndex(SONGS)];
