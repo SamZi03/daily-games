@@ -158,8 +158,6 @@ async function renderQuestion() {
     document.getElementById('hlCards').innerHTML =
         cardHTML('cardLeft', left, true) + cardHTML('cardRight', right, false);
 
-    document.getElementById('hlButtons').style.display = 'flex';
-
     // Load artwork in parallel
     const [leftUrl, rightUrl] = await Promise.all([
         getArtwork(left.title, left.artist),
@@ -170,6 +168,11 @@ async function renderQuestion() {
     const rightImg = document.getElementById('cardRightImg');
     if (leftUrl)  { leftImg.src  = leftUrl;  }
     if (rightUrl) { rightImg.src = rightUrl; }
+
+    // Clicking left card = guessing left has more (right is lower)
+    // Clicking right card = guessing right has more (right is higher)
+    document.getElementById('cardLeft').addEventListener('click',  () => choose('lower'));
+    document.getElementById('cardRight').addEventListener('click', () => choose('higher'));
 }
 
 // ============================================
@@ -182,9 +185,6 @@ function choose(guess) {
     const left  = leftSong();
     const right = rightSong();
     const correct = guess === (right.streams >= left.streams ? 'higher' : 'lower');
-
-    // Hide buttons
-    document.getElementById('hlButtons').style.display = 'none';
 
     // Count up the right card's streams
     const streamsEl  = document.getElementById('cardRightStreams');
@@ -214,8 +214,7 @@ function choose(guess) {
 // RESULT
 // ============================================
 function showResult() {
-    document.getElementById('hlCards').innerHTML    = '';
-    document.getElementById('hlButtons').style.display = 'none';
+    document.getElementById('hlCards').innerHTML = '';
 
     const box = document.getElementById('resultBox');
     box.style.display = 'block';
@@ -226,11 +225,5 @@ function showResult() {
         <a href="../../index.html" class="back-home-btn">Back to Games</a>
     `;
 }
-
-// ============================================
-// BUTTON LISTENERS
-// ============================================
-document.getElementById('higherBtn').addEventListener('click', () => choose('higher'));
-document.getElementById('lowerBtn').addEventListener('click',  () => choose('lower'));
 
 renderQuestion();
