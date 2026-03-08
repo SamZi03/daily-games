@@ -1,314 +1,14 @@
-// ============================================
-// SONG DATABASE
-// The game automatically fetches a 30-second preview
-// from iTunes (free & legal) — no URLs needed!
-// Just add: title, artist, year
-// ============================================
-const SONGS = [
-    // 2010s mainstream pop
-    { title: "Blinding Lights",                artist: "The Weeknd",                   year: 2019 },
-    { title: "Shape of You",                   artist: "Ed Sheeran",                   year: 2017 },
-    { title: "Dance Monkey",                   artist: "Tones and I",                  year: 2019 },
-    { title: "Stay",                           artist: "The Kid LAROI",                year: 2021 },
-    { title: "Levitating",                     artist: "Dua Lipa",                     year: 2020 },
-    { title: "drivers license",                artist: "Olivia Rodrigo",               year: 2021 },
-    { title: "Watermelon Sugar",               artist: "Harry Styles",                 year: 2019 },
-    { title: "good 4 u",                       artist: "Olivia Rodrigo",               year: 2021 },
-    { title: "Heat Waves",                     artist: "Glass Animals",                year: 2020 },
-    { title: "Easy On Me",                     artist: "Adele",                        year: 2021 },
-    { title: "As It Was",                      artist: "Harry Styles",                 year: 2022 },
-    { title: "Anti-Hero",                      artist: "Taylor Swift",                 year: 2022 },
-    { title: "Flowers",                        artist: "Miley Cyrus",                  year: 2023 },
-    { title: "Cruel Summer",                   artist: "Taylor Swift",                 year: 2019 },
-    { title: "Kill Bill",                      artist: "SZA",                          year: 2022 },
-    { title: "Golden Hour",                    artist: "JVKE",                         year: 2022 },
-    { title: "Calm Down",                      artist: "Rema",                         year: 2022 },
-    { title: "Industry Baby",                  artist: "Lil Nas X",                    year: 2021 },
-    { title: "Unholy",                         artist: "Sam Smith",                    year: 2022 },
-    { title: "Montero",                        artist: "Lil Nas X",                    year: 2021 },
-    { title: "Save Your Tears",                artist: "The Weeknd",                   year: 2021 },
-    { title: "abcdefu",                        artist: "GAYLE",                        year: 2021 },
-    { title: "Butter",                         artist: "BTS",                          year: 2021 },
-    { title: "Sunflower",                      artist: "Post Malone",                  year: 2018 },
-    { title: "Bad Guy",                        artist: "Billie Eilish",                year: 2019 },
+// EARLOCK — game logic. Song data lives in data.js
 
-    // More 2020s
-    { title: "Positions",                      artist: "Ariana Grande",                year: 2020 },
-    { title: "Peaches",                        artist: "Justin Bieber",                year: 2021 },
-    { title: "Dynamite",                       artist: "BTS",                          year: 2020 },
-    { title: "Mood",                           artist: "24kGoldn",                     year: 2020 },
-    { title: "Essence",                        artist: "Wizkid",                       year: 2020 },
-    { title: "Beggin",                         artist: "Maneskin",                     year: 2021 },
-    { title: "Astronaut In The Ocean",         artist: "Masked Wolf",                  year: 2021 },
-    { title: "Pepper",                         artist: "Butthole Surfers",             year: 2021 },
-    { title: "Permission to Dance",            artist: "BTS",                          year: 2021 },
-    { title: "Leave The Door Open",            artist: "Silk Sonic",                   year: 2021 },
-    { title: "Need To Know",                   artist: "Doja Cat",                     year: 2021 },
-    { title: "Fancy Like",                     artist: "Walker Hayes",                 year: 2021 },
-    { title: "Shivers",                        artist: "Ed Sheeran",                   year: 2021 },
-    { title: "Bad Habits",                     artist: "Ed Sheeran",                   year: 2021 },
-    { title: "Overpass Graffiti",              artist: "Ed Sheeran",                   year: 2021 },
-    { title: "happier than ever",              artist: "Billie Eilish",                year: 2021 },
-    { title: "NDA",                            artist: "Billie Eilish",                year: 2021 },
-    { title: "Therefore I Am",                 artist: "Billie Eilish",                year: 2020 },
-    { title: "brutal",                         artist: "Olivia Rodrigo",               year: 2021 },
-    { title: "traitor",                        artist: "Olivia Rodrigo",               year: 2021 },
-    { title: "vampire",                        artist: "Olivia Rodrigo",               year: 2023 },
-    { title: "get him back!",                  artist: "Olivia Rodrigo",               year: 2023 },
-    { title: "Escapism",                       artist: "RAYE",                         year: 2022 },
-    { title: "Creepin",                        artist: "Metro Boomin",                 year: 2022 },
-    { title: "Rich Flex",                      artist: "Drake",                        year: 2022 },
-    { title: "Jimmy Cooks",                    artist: "Drake",                        year: 2022 },
-    { title: "Sprinter",                       artist: "Dave",                         year: 2023 },
-    { title: "Knife Talk",                     artist: "Drake",                        year: 2021 },
-    { title: "Moth To A Flame",                artist: "Swedish House Mafia",          year: 2021 },
-    { title: "We Don't Talk About Bruno",      artist: "Carolina Gaitan",              year: 2021 },
-    { title: "About Damn Time",                artist: "Lizzo",                        year: 2022 },
-    { title: "Running Up That Hill",           artist: "Kate Bush",                    year: 1985 },
-    { title: "As It Was",                      artist: "Harry Styles",                 year: 2022 },
-    { title: "Late Night Talking",             artist: "Harry Styles",                 year: 2022 },
-    { title: "Music For a Sushi Restaurant",   artist: "Harry Styles",                 year: 2022 },
-    { title: "Midnight Rain",                  artist: "Taylor Swift",                 year: 2022 },
-    { title: "Lavender Haze",                  artist: "Taylor Swift",                 year: 2022 },
-    { title: "Karma",                          artist: "Taylor Swift",                 year: 2022 },
-    { title: "Snow On The Beach",              artist: "Taylor Swift",                 year: 2022 },
-    { title: "Shake It Off",                   artist: "Taylor Swift",                 year: 2014 },
-    { title: "Blank Space",                    artist: "Taylor Swift",                 year: 2014 },
-    { title: "Love Story",                     artist: "Taylor Swift",                 year: 2008 },
-    { title: "Style",                          artist: "Taylor Swift",                 year: 2014 },
-    { title: "Starboy",                        artist: "The Weeknd",                   year: 2016 },
-    { title: "Call Out My Name",               artist: "The Weeknd",                   year: 2018 },
-    { title: "Die For You",                    artist: "The Weeknd",                   year: 2016 },
-    { title: "Out of Time",                    artist: "The Weeknd",                   year: 2022 },
-    { title: "popular",                        artist: "The Weeknd",                   year: 2023 },
-
-    // 2010s bangers
-    { title: "Rolling in the Deep",            artist: "Adele",                        year: 2010 },
-    { title: "Someone Like You",               artist: "Adele",                        year: 2011 },
-    { title: "Hello",                          artist: "Adele",                        year: 2015 },
-    { title: "Uptown Funk",                    artist: "Mark Ronson",                  year: 2014 },
-    { title: "Happy",                          artist: "Pharrell Williams",            year: 2013 },
-    { title: "Thinking Out Loud",              artist: "Ed Sheeran",                   year: 2014 },
-    { title: "Photograph",                     artist: "Ed Sheeran",                   year: 2014 },
-    { title: "Perfect",                        artist: "Ed Sheeran",                   year: 2017 },
-    { title: "Castle On The Hill",             artist: "Ed Sheeran",                   year: 2017 },
-    { title: "Old Town Road",                  artist: "Lil Nas X",                    year: 2019 },
-    { title: "Rockstar",                       artist: "Post Malone",                  year: 2017 },
-    { title: "Circles",                        artist: "Post Malone",                  year: 2019 },
-    { title: "Better Now",                     artist: "Post Malone",                  year: 2018 },
-    { title: "Psycho",                         artist: "Post Malone",                  year: 2018 },
-    { title: "Congratulations",                artist: "Post Malone",                  year: 2018 },
-    { title: "One Dance",                      artist: "Drake",                        year: 2016 },
-    { title: "God's Plan",                     artist: "Drake",                        year: 2018 },
-    { title: "In My Feelings",                 artist: "Drake",                        year: 2018 },
-    { title: "Nice For What",                  artist: "Drake",                        year: 2018 },
-    { title: "Hotline Bling",                  artist: "Drake",                        year: 2015 },
-    { title: "Despacito",                      artist: "Luis Fonsi",                   year: 2017 },
-    { title: "Sorry",                          artist: "Justin Bieber",                year: 2015 },
-    { title: "Love Yourself",                  artist: "Justin Bieber",                year: 2015 },
-    { title: "What Do You Mean",               artist: "Justin Bieber",                year: 2015 },
-    { title: "Intentions",                     artist: "Justin Bieber",                year: 2020 },
-    { title: "Havana",                         artist: "Camila Cabello",               year: 2017 },
-    { title: "Never Be The Same",              artist: "Camila Cabello",               year: 2017 },
-    { title: "New Rules",                      artist: "Dua Lipa",                     year: 2017 },
-    { title: "One Kiss",                       artist: "Dua Lipa",                     year: 2018 },
-    { title: "Physical",                       artist: "Dua Lipa",                     year: 2020 },
-    { title: "Don't Start Now",                artist: "Dua Lipa",                     year: 2019 },
-    { title: "Senorita",                       artist: "Shawn Mendes",                 year: 2019 },
-    { title: "Stitches",                       artist: "Shawn Mendes",                 year: 2015 },
-    { title: "There's Nothing Holdin' Me Back",artist: "Shawn Mendes",                 year: 2017 },
-    { title: "7 Years",                        artist: "Lukas Graham",                 year: 2015 },
-    { title: "Stressed Out",                   artist: "Twenty One Pilots",            year: 2015 },
-    { title: "Heathens",                       artist: "Twenty One Pilots",            year: 2016 },
-    { title: "Ride",                           artist: "Twenty One Pilots",            year: 2015 },
-    { title: "Believer",                       artist: "Imagine Dragons",              year: 2017 },
-    { title: "Thunder",                        artist: "Imagine Dragons",              year: 2017 },
-    { title: "Radioactive",                    artist: "Imagine Dragons",              year: 2012 },
-    { title: "Natural",                        artist: "Imagine Dragons",              year: 2018 },
-    { title: "Demons",                         artist: "Imagine Dragons",              year: 2012 },
-    { title: "Sugar",                          artist: "Maroon 5",                     year: 2014 },
-    { title: "Girls Like You",                 artist: "Maroon 5",                     year: 2018 },
-    { title: "Moves Like Jagger",              artist: "Maroon 5",                     year: 2011 },
-    { title: "Animals",                        artist: "Maroon 5",                     year: 2014 },
-    { title: "Wrecking Ball",                  artist: "Miley Cyrus",                  year: 2013 },
-    { title: "We Can't Stop",                  artist: "Miley Cyrus",                  year: 2013 },
-    { title: "Problem",                        artist: "Ariana Grande",                year: 2014 },
-    { title: "Thank U Next",                   artist: "Ariana Grande",                year: 2018 },
-    { title: "7 Rings",                        artist: "Ariana Grande",                year: 2019 },
-    { title: "No Tears Left To Cry",           artist: "Ariana Grande",                year: 2018 },
-    { title: "Into You",                       artist: "Ariana Grande",                year: 2016 },
-    { title: "Side To Side",                   artist: "Ariana Grande",                year: 2016 },
-    { title: "God is a woman",                 artist: "Ariana Grande",                year: 2018 },
-
-    // Hip-hop & R&B
-    { title: "Sicko Mode",                     artist: "Travis Scott",                 year: 2018 },
-    { title: "Goosebumps",                     artist: "Travis Scott",                 year: 2016 },
-    { title: "Antidote",                       artist: "Travis Scott",                 year: 2015 },
-    { title: "HIGHEST IN THE ROOM",            artist: "Travis Scott",                 year: 2019 },
-    { title: "DNA",                            artist: "Kendrick Lamar",               year: 2017 },
-    { title: "HUMBLE",                         artist: "Kendrick Lamar",               year: 2017 },
-    { title: "Not Like Us",                    artist: "Kendrick Lamar",               year: 2024 },
-    { title: "All The Stars",                  artist: "Kendrick Lamar",               year: 2018 },
-    { title: "Savage",                         artist: "Megan Thee Stallion",          year: 2020 },
-    { title: "WAP",                            artist: "Cardi B",                      year: 2020 },
-    { title: "Bodak Yellow",                   artist: "Cardi B",                      year: 2017 },
-    { title: "I Like It",                      artist: "Cardi B",                      year: 2018 },
-    { title: "Rockstar",                       artist: "DaBaby",                       year: 2020 },
-    { title: "BOP",                            artist: "DaBaby",                       year: 2019 },
-    { title: "Franchise",                      artist: "Travis Scott",                 year: 2020 },
-    { title: "Essence",                        artist: "Wizkid",                       year: 2020 },
-    { title: "Afro Nation",                    artist: "WizKid",                       year: 2021 },
-    { title: "Lemon",                          artist: "N.E.R.D",                      year: 2017 },
-    { title: "MIDDLE CHILD",                   artist: "J. Cole",                      year: 2019 },
-    { title: "No Role Modelz",                 artist: "J. Cole",                      year: 2014 },
-
-    // UK / Grime / Afrobeats
-    { title: "Shutdown",                       artist: "Skepta",                       year: 2015 },
-    { title: "Man's Not Hot",                  artist: "Big Shaq",                     year: 2017 },
-    { title: "German Whip",                    artist: "Meridian Dan",                 year: 2014 },
-    { title: "Vossi Bop",                      artist: "Stormzy",                      year: 2019 },
-    { title: "Blinded By Your Grace",          artist: "Stormzy",                      year: 2017 },
-    { title: "Superheroes",                    artist: "Stormzy",                      year: 2023 },
-    { title: "Little Bit of Love",             artist: "Tom Grennan",                  year: 2021 },
-    { title: "Midnight",                       artist: "Russ Millions",                year: 2021 },
-    { title: "Essence",                        artist: "Wizkid",                       year: 2021 },
-    { title: "Waterfall",                      artist: "TLC",                          year: 1994 },
-
-    // 2000s nostalgia
-    { title: "Crazy In Love",                  artist: "Beyonce",                      year: 2003 },
-    { title: "Halo",                           artist: "Beyonce",                      year: 2008 },
-    { title: "Single Ladies",                  artist: "Beyonce",                      year: 2008 },
-    { title: "Irreplaceable",                  artist: "Beyonce",                      year: 2006 },
-    { title: "Telephone",                      artist: "Lady Gaga",                    year: 2009 },
-    { title: "Bad Romance",                    artist: "Lady Gaga",                    year: 2009 },
-    { title: "Just Dance",                     artist: "Lady Gaga",                    year: 2008 },
-    { title: "Poker Face",                     artist: "Lady Gaga",                    year: 2008 },
-    { title: "Umbrella",                       artist: "Rihanna",                      year: 2007 },
-    { title: "Diamonds",                       artist: "Rihanna",                      year: 2012 },
-    { title: "We Found Love",                  artist: "Rihanna",                      year: 2011 },
-    { title: "Only Girl",                      artist: "Rihanna",                      year: 2010 },
-    { title: "Disturbia",                      artist: "Rihanna",                      year: 2008 },
-    { title: "California Gurls",               artist: "Katy Perry",                   year: 2010 },
-    { title: "Roar",                           artist: "Katy Perry",                   year: 2013 },
-    { title: "Firework",                       artist: "Katy Perry",                   year: 2010 },
-    { title: "Dark Horse",                     artist: "Katy Perry",                   year: 2013 },
-    { title: "Teenage Dream",                  artist: "Katy Perry",                   year: 2010 },
-    { title: "Party In The U.S.A.",            artist: "Miley Cyrus",                  year: 2009 },
-    { title: "Since U Been Gone",              artist: "Kelly Clarkson",               year: 2004 },
-    { title: "Complicated",                    artist: "Avril Lavigne",                year: 2002 },
-    { title: "Girlfriend",                     artist: "Avril Lavigne",                year: 2007 },
-    { title: "Sk8er Boi",                      artist: "Avril Lavigne",                year: 2002 },
-    { title: "In Da Club",                     artist: "50 Cent",                      year: 2003 },
-    { title: "Yeah!",                          artist: "Usher",                        year: 2004 },
-    { title: "My Boo",                         artist: "Usher",                        year: 2004 },
-    { title: "Burn",                           artist: "Usher",                        year: 2004 },
-    { title: "Gold Digger",                    artist: "Kanye West",                   year: 2005 },
-    { title: "Stronger",                       artist: "Kanye West",                   year: 2007 },
-    { title: "Heartless",                      artist: "Kanye West",                   year: 2008 },
-    { title: "Lose Yourself",                  artist: "Eminem",                       year: 2002 },
-    { title: "Without Me",                     artist: "Eminem",                       year: 2002 },
-    { title: "Slim Shady",                     artist: "Eminem",                       year: 1999 },
-    { title: "The Real Slim Shady",            artist: "Eminem",                       year: 2000 },
-
-    // 90s classics
-    { title: "...Baby One More Time",          artist: "Britney Spears",               year: 1998 },
-    { title: "Toxic",                          artist: "Britney Spears",               year: 2003 },
-    { title: "Oops!... I Did It Again",        artist: "Britney Spears",               year: 2000 },
-    { title: "Wannabe",                        artist: "Spice Girls",                  year: 1996 },
-    { title: "2 Become 1",                     artist: "Spice Girls",                  year: 1996 },
-    { title: "Say You'll Be There",            artist: "Spice Girls",                  year: 1996 },
-    { title: "Quit Playing Games",             artist: "Backstreet Boys",              year: 1996 },
-    { title: "I Want It That Way",             artist: "Backstreet Boys",              year: 1999 },
-    { title: "Everybody",                      artist: "Backstreet Boys",              year: 1997 },
-    { title: "Tearin' Up My Heart",            artist: "NSYNC",                        year: 1997 },
-    { title: "Bye Bye Bye",                    artist: "NSYNC",                        year: 2000 },
-    { title: "No Scrubs",                      artist: "TLC",                          year: 1999 },
-    { title: "Waterfalls",                     artist: "TLC",                          year: 1994 },
-    { title: "Creep",                          artist: "TLC",                          year: 1992 },
-    { title: "Smells Like Teen Spirit",        artist: "Nirvana",                      year: 1991 },
-    { title: "Come As You Are",                artist: "Nirvana",                      year: 1991 },
-    { title: "Under The Bridge",               artist: "Red Hot Chili Peppers",        year: 1991 },
-    { title: "Wonderwall",                     artist: "Oasis",                        year: 1995 },
-    { title: "Don't Look Back In Anger",       artist: "Oasis",                        year: 1996 },
-    { title: "Champagne Supernova",            artist: "Oasis",                        year: 1995 },
-    { title: "Losing My Religion",             artist: "R.E.M.",                       year: 1991 },
-    { title: "Semi-Charmed Life",              artist: "Third Eye Blind",              year: 1997 },
-    { title: "MMMBop",                         artist: "Hanson",                       year: 1997 },
-    { title: "Killing Me Softly",              artist: "Fugees",                       year: 1996 },
-    { title: "Gangsta's Paradise",             artist: "Coolio",                       year: 1995 },
-    { title: "Informer",                       artist: "Snow",                         year: 1992 },
-    { title: "Rhythm Is a Dancer",             artist: "Snap!",                        year: 1992 },
-    { title: "Freed from Desire",              artist: "Gala",                         year: 1997 },
-
-    // 80s icons
-    { title: "Take On Me",                     artist: "a-ha",                         year: 1985 },
-    { title: "Don't You Want Me",              artist: "Human League",                 year: 1981 },
-    { title: "Sweet Child O' Mine",            artist: "Guns N' Roses",                year: 1987 },
-    { title: "November Rain",                  artist: "Guns N' Roses",                year: 1991 },
-    { title: "Livin' on a Prayer",             artist: "Bon Jovi",                     year: 1986 },
-    { title: "You Give Love a Bad Name",       artist: "Bon Jovi",                     year: 1986 },
-    { title: "Total Eclipse of the Heart",     artist: "Bonnie Tyler",                 year: 1983 },
-    { title: "Africa",                         artist: "Toto",                         year: 1982 },
-    { title: "Don't Stop Believin'",           artist: "Journey",                      year: 1981 },
-    { title: "Eye of the Tiger",               artist: "Survivor",                     year: 1982 },
-    { title: "Girls Just Wanna Have Fun",      artist: "Cyndi Lauper",                 year: 1983 },
-    { title: "Time After Time",                artist: "Cyndi Lauper",                 year: 1983 },
-    { title: "Like a Prayer",                  artist: "Madonna",                      year: 1989 },
-    { title: "Material Girl",                  artist: "Madonna",                      year: 1984 },
-    { title: "Papa Don't Preach",              artist: "Madonna",                      year: 1986 },
-    { title: "Wake Me Up Before You Go-Go",    artist: "Wham!",                        year: 1984 },
-    { title: "Careless Whisper",               artist: "George Michael",               year: 1984 },
-    { title: "Faith",                          artist: "George Michael",               year: 1987 },
-    { title: "Billie Jean",                    artist: "Michael Jackson",              year: 1982 },
-    { title: "Thriller",                       artist: "Michael Jackson",              year: 1982 },
-    { title: "Beat It",                        artist: "Michael Jackson",              year: 1982 },
-    { title: "Man In The Mirror",              artist: "Michael Jackson",              year: 1987 },
-    { title: "Smooth Criminal",                artist: "Michael Jackson",              year: 1987 },
-    { title: "Bohemian Rhapsody",              artist: "Queen",                        year: 1975 },
-    { title: "Don't Stop Me Now",              artist: "Queen",                        year: 1978 },
-    { title: "We Will Rock You",               artist: "Queen",                        year: 1977 },
-    { title: "Radio Ga Ga",                    artist: "Queen",                        year: 1984 },
-    { title: "Under Pressure",                 artist: "Queen",                        year: 1981 },
-
-    // Dance / Electronic
-    { title: "One More Time",                  artist: "Daft Punk",                    year: 2000 },
-    { title: "Get Lucky",                      artist: "Daft Punk",                    year: 2013 },
-    { title: "Instant Crush",                  artist: "Daft Punk",                    year: 2013 },
-    { title: "Levels",                         artist: "Avicii",                       year: 2011 },
-    { title: "Wake Me Up",                     artist: "Avicii",                       year: 2013 },
-    { title: "Hey Brother",                    artist: "Avicii",                       year: 2013 },
-    { title: "Lean On",                        artist: "Major Lazer",                  year: 2015 },
-    { title: "Cold Water",                     artist: "Major Lazer",                  year: 2016 },
-    { title: "Animals",                        artist: "Martin Garrix",                year: 2013 },
-    { title: "In The Name Of Love",            artist: "Martin Garrix",                year: 2016 },
-    { title: "Titanium",                       artist: "David Guetta",                 year: 2011 },
-    { title: "Turn Me On",                     artist: "David Guetta",                 year: 2011 },
-    { title: "Play Hard",                      artist: "David Guetta",                 year: 2013 },
-    { title: "Clarity",                        artist: "Zedd",                         year: 2012 },
-    { title: "Beautiful Now",                  artist: "Zedd",                         year: 2015 },
-    { title: "The Middle",                     artist: "Zedd",                         year: 2018 },
-    { title: "Skyfall",                        artist: "Adele",                        year: 2012 },
-    { title: "Stay With Me",                   artist: "Sam Smith",                    year: 2014 },
-    { title: "Writing's On The Wall",          artist: "Sam Smith",                    year: 2015 },
-    { title: "Latch",                          artist: "Disclosure",                   year: 2012 },
-    { title: "Magnets",                        artist: "Disclosure",                   year: 2015 },
-    { title: "Jubel",                          artist: "Klingande",                    year: 2013 },
-    { title: "Rather Be",                      artist: "Clean Bandit",                 year: 2014 },
-    { title: "Rockabye",                       artist: "Clean Bandit",                 year: 2016 },
-    { title: "Symphony",                       artist: "Clean Bandit",                 year: 2017 },
-    { title: "Solo",                           artist: "Clean Bandit",                 year: 2018 },
-    { title: "Lean On",                        artist: "Major Lazer",                  year: 2015 },
-];
-
-// Seconds of audio revealed per attempt
 const CLIP_LENGTHS = [0.1, 0.5, 2, 4, 8, 15];
 const MAX_ATTEMPTS = 6;
+const MAX_CLIP     = 15;
 
 const todaySong = SONGS[getDailyIndex(SONGS)];
 const SAVE_KEY  = 'earworm_' + getTodayString();
 
 // ============================================
-// ITUNES API — fetches a free legal 30s preview
+// ITUNES API
 // ============================================
 async function fetchPreviewUrl(title, artist) {
     try {
@@ -319,9 +19,7 @@ async function fetchPreviewUrl(title, artist) {
             r.trackName.toLowerCase().includes(title.toLowerCase())
         ) || data.results[0];
         return match ? match.previewUrl : null;
-    } catch {
-        return null;
-    }
+    } catch { return null; }
 }
 
 // ============================================
@@ -332,7 +30,6 @@ function loadState() {
         attempt: 0, guesses: [], gameOver: false, won: false
     };
 }
-
 function saveState(s) { localStorage.setItem(SAVE_KEY, JSON.stringify(s)); }
 
 let state = loadState();
@@ -341,36 +38,32 @@ let state = loadState();
 // AUDIO PLAYER
 // ============================================
 const audio       = document.getElementById('audioPlayer');
-audio.volume = 0.35;
+audio.volume      = 0.35;
 const playBtn     = document.getElementById('playBtn');
 const clipLabel   = document.getElementById('clipSeconds');
 const audioNote   = document.getElementById('audioNote');
 const clipPointer = document.getElementById('clipPointer');
-
-// Load preview on startup
-playBtn.disabled = true;
-audioNote.textContent = 'Loading audio...';
-
 const progressBar = document.getElementById('progressBar');
 const progressWrap = document.getElementById('progressWrap');
 let previewUrl = null;
 
-// Inject segment gap markers into the bar (visible as dark lines cutting through the fill)
-const MAX_CLIP = 15;
+playBtn.disabled = true;
+audioNote.textContent = 'Loading audio...';
+
 CLIP_LENGTHS.slice(0, -1).forEach(len => {
     const marker = document.createElement('div');
-    marker.className = 'progress-marker';
+    marker.className  = 'progress-marker';
     marker.style.left = (len / MAX_CLIP * 100) + '%';
     progressWrap.appendChild(marker);
 });
 
 fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
     if (url) {
-        previewUrl = url;
-        audio.preload = 'auto';
-        audio.src = url;
-        audioNote.textContent = '30-second preview via iTunes';
-        playBtn.disabled = false;
+        previewUrl        = url;
+        audio.preload     = 'auto';
+        audio.src         = url;
+        audioNote.textContent  = '30-second preview via iTunes';
+        playBtn.disabled  = false;
     } else {
         audioNote.textContent = 'Audio unavailable for this song — guessing still works!';
     }
@@ -383,7 +76,6 @@ function startClip(seconds) {
     progressBar.style.width = '0%';
 
     audio.play().then(() => {
-        // Audio confirmed playing — start progress bar and clip timer
         const pct = (seconds / MAX_CLIP * 100).toFixed(2) + '%';
         requestAnimationFrame(() => {
             progressBar.style.transition = `width ${seconds}s linear`;
@@ -392,18 +84,15 @@ function startClip(seconds) {
         setTimeout(() => {
             audio.pause();
             audio.currentTime = 0;
-            playBtn.disabled = false;
+            playBtn.disabled  = false;
             playBtn.textContent = '▶';
             progressBar.style.transition = 'none';
             progressBar.style.width = '0%';
         }, seconds * 1000);
     }).catch(() => {
-        // Play failed — reload audio and try once more
         audio.src = previewUrl;
         audio.load();
-        audio.addEventListener('canplay', () => {
-            startClip(seconds);
-        }, { once: true });
+        audio.addEventListener('canplay', () => startClip(seconds), { once: true });
     });
 }
 
@@ -428,15 +117,12 @@ guessInput.addEventListener('input', () => {
     const val = guessInput.value.toLowerCase().trim();
     autocomplete.innerHTML = '';
     if (!val) return;
-
     const matches = SONGS.filter(s =>
-        s.title.toLowerCase().includes(val) ||
-        s.artist.toLowerCase().includes(val)
+        s.title.toLowerCase().includes(val) || s.artist.toLowerCase().includes(val)
     ).slice(0, 6);
-
     matches.forEach(song => {
         const item = document.createElement('div');
-        item.className = 'autocomplete-item';
+        item.className  = 'autocomplete-item';
         item.textContent = `${song.title} — ${song.artist}`;
         item.addEventListener('click', () => {
             guessInput.value = `${song.title} — ${song.artist}`;
@@ -454,15 +140,13 @@ function submitGuess(skipped) {
     const raw = guessInput.value.trim();
     if (!skipped && !raw) return;
 
-    const correct = !skipped &&
-        raw.toLowerCase().includes(todaySong.title.toLowerCase());
-
+    const correct = !skipped && raw.toLowerCase().includes(todaySong.title.toLowerCase());
     state.guesses.push({ text: skipped ? '(skipped)' : raw, correct, skipped });
     state.attempt++;
 
     if (correct || state.attempt >= MAX_ATTEMPTS) {
         state.gameOver = true;
-        state.won = correct;
+        state.won      = correct;
         markGamePlayed('earlock');
     }
 
@@ -476,13 +160,12 @@ document.getElementById('submitBtn').addEventListener('click', () => submitGuess
 document.getElementById('skipBtn').addEventListener('click',   () => submitGuess(true));
 guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(false); });
 document.addEventListener('click', e => {
-    if (!guessInput.contains(e.target) && !autocomplete.contains(e.target)) {
+    if (!guessInput.contains(e.target) && !autocomplete.contains(e.target))
         autocomplete.innerHTML = '';
-    }
 });
 
 // ============================================
-// FULL PREVIEW — auto-plays when game ends
+// FULL PREVIEW
 // ============================================
 function playFullPreview() {
     if (!previewUrl) return;
@@ -512,11 +195,8 @@ function playFullPreview() {
         });
     };
 
-    if (audio.currentTime > 0) {
-        audio.addEventListener('seeked', doPlay, { once: true });
-    } else {
-        doPlay();
-    }
+    if (audio.currentTime > 0) audio.addEventListener('seeked', doPlay, { once: true });
+    else doPlay();
 }
 
 // ============================================
@@ -526,15 +206,12 @@ function render() {
     const clipIndex = Math.min(state.attempt, CLIP_LENGTHS.length - 1);
     const seconds   = CLIP_LENGTHS[clipIndex];
 
-    // Update clip pointer label and horizontal position
-    clipLabel.textContent = seconds < 1 ? seconds + 's' : seconds + 's';
+    clipLabel.textContent  = seconds + 's';
     clipPointer.style.left = (seconds / MAX_CLIP * 100) + '%';
 
-    // Hide the game audio section once game is over (full player shown in result box instead)
     const audioSection = document.getElementById('audioSection');
     if (audioSection) audioSection.style.display = state.gameOver ? 'none' : 'flex';
 
-    // 6 fixed guess rows
     const rowsEl = document.getElementById('guessRows');
     rowsEl.innerHTML = '';
     for (let i = 0; i < MAX_ATTEMPTS; i++) {
@@ -542,32 +219,20 @@ function render() {
         row.className = 'heardle-guess-row';
         if (i < state.guesses.length) {
             const g = state.guesses[i];
-            if (g.correct) {
-                row.classList.add('correct');
-                row.textContent = g.text;
-            } else if (g.skipped) {
-                row.classList.add('skipped');
-                row.textContent = 'Skipped';
-            } else {
-                row.classList.add('wrong');
-                row.textContent = g.text;
-            }
+            row.classList.add(g.correct ? 'correct' : g.skipped ? 'skipped' : 'wrong');
+            row.textContent = g.skipped ? 'Skipped' : g.text;
         }
         rowsEl.appendChild(row);
     }
 
-    // Game over
     if (state.gameOver) {
         document.getElementById('inputSection').style.display = 'none';
         const box = document.getElementById('resultBox');
         box.style.display = 'block';
         box.className = `result-box ${state.won ? 'win' : 'lose'}`;
         const resultText = state.won
-            ? `<h3>Nice one!</h3>
-               <p>You got it in <strong>${state.attempt}</strong> guess${state.attempt !== 1 ? 'es' : ''}!</p>`
-            : `<h3>Better luck tomorrow!</h3>
-               <p>The song was:</p>`;
-
+            ? `<h3>Nice one!</h3><p>You got it in <strong>${state.attempt}</strong> guess${state.attempt !== 1 ? 'es' : ''}!</p>`
+            : `<h3>Better luck tomorrow!</h3><p>The song was:</p>`;
         box.innerHTML = `
             ${resultText}
             <p class="answer-reveal">${todaySong.title} — ${todaySong.artist}</p>
@@ -578,8 +243,6 @@ function render() {
             </div>
             <a href="../../index.html" class="back-home-btn">Back to Games</a>
         `;
-
-        // Auto-play the full preview after a short pause so the result box renders first
         setTimeout(playFullPreview, 400);
     }
 }
