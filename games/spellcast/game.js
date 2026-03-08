@@ -2,76 +2,77 @@
 // SPELLING BEE — Word sets (10 days of content)
 // Each set has 5 words, easy → hard
 // ============================================
+// Each set: Round 1 = very easy, Round 2 = easy, Round 3 = medium, Round 4 = hard, Round 5 = very hard
 const WORD_SETS = [
     [
-        { word: 'apple',    definition: 'A round fruit with red, green, or yellow skin.',              sentence: 'She packed an apple in her lunch bag.' },
-        { word: 'bridge',   definition: 'A structure built to cross over water or a road.',             sentence: 'The bridge connects the two sides of the river.' },
-        { word: 'castle',   definition: 'A large fortified building from the medieval period.',          sentence: 'The tourists climbed to the top of the castle.' },
-        { word: 'diamond',  definition: 'A precious gemstone that is extremely hard and clear.',         sentence: 'The ring was set with a sparkling diamond.' },
-        { word: 'eclipse',  definition: 'When one object in space blocks light from another.',           sentence: 'The city fell dark during the solar eclipse.' },
+        { word: 'bird',       definition: 'A feathered animal that usually flies.',                          sentence: 'A bird landed on the branch outside the window.' },
+        { word: 'cloud',      definition: 'A visible mass of water droplets floating in the sky.',           sentence: 'A large cloud blocked the sun on a warm afternoon.' },
+        { word: 'bridge',     definition: 'A structure built to cross over water or a road.',                sentence: 'The bridge connects the two sides of the river.' },
+        { word: 'captain',    definition: 'The person in charge of a ship, aircraft, or sports team.',       sentence: 'The captain steered the ship through the rough sea.' },
+        { word: 'eclipse',    definition: 'When one object in space blocks the light from another.',         sentence: 'The city fell dark during the solar eclipse.' },
     ],
     [
-        { word: 'jungle',   definition: 'A thick tropical forest full of plants and animals.',           sentence: 'The explorers made their way through the dense jungle.' },
-        { word: 'kettle',   definition: 'A container used for boiling water.',                           sentence: 'She put the kettle on to make a cup of tea.' },
-        { word: 'lantern',  definition: 'A portable light enclosed in a transparent case.',              sentence: 'He carried a lantern through the dark cave.' },
-        { word: 'marble',   definition: 'A smooth hard stone used in sculpture and building.',           sentence: 'The palace floor was made of polished marble.' },
-        { word: 'necklace', definition: 'A piece of jewellery worn around the neck.',                    sentence: 'She received a gold necklace as a birthday gift.' },
+        { word: 'fish',       definition: 'A cold-blooded animal that lives in water and has fins.',         sentence: 'She caught a fish from the river on a sunny day.' },
+        { word: 'storm',      definition: 'A period of bad weather with strong winds and heavy rain.',        sentence: 'The storm knocked over several trees in the park.' },
+        { word: 'castle',     definition: 'A large fortified building from the medieval period.',             sentence: 'The tourists climbed to the top of the castle.' },
+        { word: 'dolphin',    definition: 'An intelligent sea mammal known for leaping out of the water.',   sentence: 'A dolphin swam alongside the boat out at sea.' },
+        { word: 'pharmacy',   definition: 'A shop where medicines and health products are sold.',             sentence: 'She picked up her prescription from the pharmacy.' },
     ],
     [
-        { word: 'oxygen',   definition: 'A gas that humans and animals need to breathe.',                sentence: 'Trees release oxygen into the atmosphere.' },
-        { word: 'phantom',  definition: 'A ghost or something that appears unreal.',                     sentence: 'The villagers spoke of a phantom in the old house.' },
-        { word: 'quartz',   definition: 'A hard crystalline mineral found in many rocks.',               sentence: 'The museum displayed a large piece of rose quartz.' },
-        { word: 'rhythm',   definition: 'A strong regular pattern of sound or movement.',                sentence: 'The drummer kept a perfect rhythm throughout the song.' },
-        { word: 'sphinx',   definition: 'A mythical creature with a human head and a lion body.',        sentence: 'The ancient sphinx stood silently in the desert.' },
+        { word: 'jump',       definition: 'To push yourself off the ground and into the air.',               sentence: 'The children jump on the trampoline in the garden.' },
+        { word: 'honey',      definition: 'A sweet, sticky food made by bees.',                              sentence: 'She spread honey on her toast every morning.' },
+        { word: 'jungle',     definition: 'A thick tropical forest full of plants and animals.',              sentence: 'The explorers made their way through the dense jungle.' },
+        { word: 'champion',   definition: 'A person who has won a competition or contest.',                   sentence: 'She trained every day to become a champion.' },
+        { word: 'orchestra',  definition: 'A large group of musicians who play different instruments together.',sentence: 'The orchestra performed to a full audience.' },
     ],
     [
-        { word: 'torrent',  definition: 'A strong and fast-moving stream of water.',                     sentence: 'A torrent of rain flooded the narrow street.' },
-        { word: 'unicorn',  definition: 'A mythical horse with a single horn on its forehead.',          sentence: 'The child drew a unicorn in her notebook.' },
-        { word: 'vortex',   definition: 'A mass of air or water spinning around a central point.',       sentence: 'The leaves spiralled in a tiny vortex of wind.' },
-        { word: 'walrus',   definition: 'A large marine mammal known for its long ivory tusks.',         sentence: 'The walrus sunbathed on an ice floe.' },
-        { word: 'zealous',  definition: 'Showing great energy or enthusiasm for a cause.',               sentence: 'She was zealous in her efforts to help others.' },
+        { word: 'snow',       definition: 'Frozen water that falls from the sky in soft white flakes.',       sentence: 'Snow covered the ground overnight in winter.' },
+        { word: 'light',      definition: 'The energy that allows us to see things around us.',               sentence: 'The light in the room made it easier to read.' },
+        { word: 'garden',     definition: 'An area of land used for growing plants and flowers.',              sentence: 'She spent the afternoon working in the garden.' },
+        { word: 'elephant',   definition: 'The largest land animal, with a long trunk and big ears.',         sentence: 'An elephant splashed water with its trunk at the zoo.' },
+        { word: 'necessary',  definition: 'Something that must be done or is very important.',                sentence: 'It is necessary to drink water to stay healthy.' },
     ],
     [
-        { word: 'debris',   definition: 'Scattered pieces of rubbish or the remains of something destroyed.', sentence: 'Workers cleared the debris after the storm.' },
-        { word: 'glacier',  definition: 'A slow-moving mass of ice formed from compacted snow.',         sentence: 'The glacier carved the valley over thousands of years.' },
-        { word: 'harbour',  definition: 'A sheltered stretch of water where ships can dock.',             sentence: 'Fishing boats filled the harbour at dawn.' },
-        { word: 'illusion', definition: 'Something that deceives the eyes or the mind.',                 sentence: 'The magician created the illusion of a floating ball.' },
-        { word: 'journal',  definition: 'A personal diary or a regular publication.',                    sentence: 'She wrote in her journal every evening before bed.' },
+        { word: 'road',       definition: 'A long hard surface built for vehicles and people to travel on.',  sentence: 'The road was quiet early on Sunday morning.' },
+        { word: 'apple',      definition: 'A round fruit with red, green, or yellow skin.',                   sentence: 'She packed an apple in her lunch bag.' },
+        { word: 'silver',     definition: 'A shiny grey-white precious metal used in jewellery and coins.',   sentence: 'The trophy was made of polished silver.' },
+        { word: 'umbrella',   definition: 'A folding device held over your head to keep off rain.',           sentence: 'She grabbed her umbrella before leaving the house.' },
+        { word: 'nocturnal',  definition: 'Active at night rather than during the day.',                      sentence: 'Owls are nocturnal creatures that hunt in darkness.' },
     ],
     [
-        { word: 'labyrinth',definition: 'A complicated network of paths; a maze.',                       sentence: 'They got completely lost in the ancient labyrinth.' },
-        { word: 'monarch',  definition: 'A ruler such as a king, queen, or emperor.',                    sentence: 'The monarch addressed the nation in a speech.' },
-        { word: 'nocturnal',definition: 'Active at night rather than during the day.',                   sentence: 'Owls are nocturnal birds that hunt in darkness.' },
-        { word: 'ominous',  definition: 'Giving the impression that something bad is about to happen.',  sentence: 'Dark ominous clouds gathered on the horizon.' },
-        { word: 'perilous', definition: 'Full of danger or risk.',                                       sentence: 'The mountaineers faced a perilous climb.' },
+        { word: 'sun',        definition: 'The star at the centre of our solar system that gives us light.',  sentence: 'The sun shone brightly on a warm summer afternoon.' },
+        { word: 'bread',      definition: 'A food made from flour, water, and yeast, baked in an oven.',     sentence: 'She baked a fresh loaf of bread in the morning.' },
+        { word: 'mirror',     definition: 'A flat glass surface that reflects images.',                       sentence: 'She checked her appearance in the mirror before leaving.' },
+        { word: 'adventure',  definition: 'An exciting or unusual experience involving risk.',                sentence: 'The camping trip turned into a great adventure.' },
+        { word: 'rhythm',     definition: 'A strong regular pattern of sound or movement.',                   sentence: 'The drummer kept a perfect rhythm throughout the song.' },
     ],
     [
-        { word: 'quarrel',  definition: 'An angry argument or disagreement between people.',             sentence: 'The two neighbours had a quarrel over the fence.' },
-        { word: 'reckless', definition: 'Acting without thinking about the consequences.',               sentence: 'His reckless driving caused the accident.' },
-        { word: 'serene',   definition: 'Calm, peaceful, and untroubled.',                               sentence: 'The lake looked serene in the early morning light.' },
-        { word: 'typhoon',  definition: 'A tropical storm occurring in the western Pacific Ocean.',      sentence: 'The typhoon caused widespread flooding in the region.' },
-        { word: 'utmost',   definition: 'Most extreme or greatest in amount or degree.',                 sentence: 'He handled the situation with the utmost care.' },
+        { word: 'rain',       definition: 'Water that falls from clouds in small drops.',                     sentence: 'The rain fell heavily throughout the afternoon.' },
+        { word: 'river',      definition: 'A large natural stream of water flowing towards the sea.',         sentence: 'They kayaked along the river on a sunny day.' },
+        { word: 'lantern',    definition: 'A portable light enclosed in a transparent case.',                 sentence: 'He carried a lantern through the dark cave.' },
+        { word: 'volcano',    definition: 'A mountain with a large opening through which lava can erupt.',    sentence: 'The volcano erupted and covered the village in ash.' },
+        { word: 'labyrinth',  definition: 'A complicated network of paths that is very difficult to navigate.',sentence: 'They got completely lost in the ancient labyrinth.' },
     ],
     [
-        { word: 'vagrant',  definition: 'A person without a settled home or regular work.',              sentence: 'A vagrant slept on the bench in the park.' },
-        { word: 'zenith',   definition: 'The highest point; the peak of something.',                     sentence: 'The sun reached its zenith at noon.' },
-        { word: 'altitude', definition: 'The height of an object or place above sea level.',             sentence: 'At high altitude, the air becomes much thinner.' },
-        { word: 'cascade',  definition: 'A small waterfall or a series of stages.',                      sentence: 'Water fell in a beautiful cascade over the rocks.' },
-        { word: 'dexterity',definition: 'Skill in performing tasks with the hands.',                     sentence: 'The surgeon operated with remarkable dexterity.' },
+        { word: 'book',       definition: 'A set of printed pages bound together with a cover.',              sentence: 'She read a book by the window every evening.' },
+        { word: 'music',      definition: 'Sounds arranged in patterns to create something pleasant to hear.', sentence: 'The music filled the room during the party.' },
+        { word: 'harbour',    definition: 'A sheltered stretch of water where ships can dock safely.',        sentence: 'Fishing boats filled the harbour at dawn.' },
+        { word: 'mosquito',   definition: 'A small flying insect that bites and can carry disease.',          sentence: 'A mosquito bite left a red mark on her arm.' },
+        { word: 'jeopardy',   definition: 'A situation of serious danger or risk of loss.',                   sentence: 'The bad weather put their plans in jeopardy.' },
     ],
     [
-        { word: 'eloquent', definition: 'Fluent and persuasive in speaking or writing.',                 sentence: 'The lawyer gave an eloquent closing argument.' },
-        { word: 'fracture', definition: 'A crack or break in something hard like bone or rock.',         sentence: 'The X-ray revealed a fracture in her wrist.' },
-        { word: 'gossamer', definition: 'Something extremely light and delicate.',                       sentence: 'The spider\'s web was as light as gossamer.' },
-        { word: 'heirloom', definition: 'A valuable object passed down through generations of a family.',sentence: 'The clock was a family heirloom from her grandfather.' },
-        { word: 'intricate',definition: 'Very detailed and complicated in design or structure.',         sentence: 'The jeweller created an intricate pattern on the ring.' },
+        { word: 'cat',        definition: 'A small furry pet animal that purrs and meows.',                   sentence: 'The cat curled up on the sofa by the fire.' },
+        { word: 'beach',      definition: 'An area of sand or pebbles next to the sea.',                      sentence: 'The children played all day on the beach.' },
+        { word: 'journal',    definition: 'A personal diary or regular written record of events.',             sentence: 'She wrote in her journal every evening before bed.' },
+        { word: 'chocolate',  definition: 'A sweet brown food made from cocoa beans.',                        sentence: 'She bought a bar of chocolate from the corner shop.' },
+        { word: 'conscience', definition: 'The inner sense of what is right or wrong in your actions.',       sentence: 'His conscience told him to return the wallet.' },
     ],
     [
-        { word: 'jeopardy', definition: 'Danger of loss, harm, or failure.',                            sentence: 'The bad weather put their plans in jeopardy.' },
-        { word: 'kaleidoscope', definition: 'A tube producing changing symmetrical patterns of colour.', sentence: 'The kaleidoscope produced beautiful patterns of light.' },
-        { word: 'luminous', definition: 'Giving off light; very bright.',                               sentence: 'The luminous stars filled the night sky.' },
-        { word: 'metamorphosis', definition: 'A complete change of character, appearance, or form.',    sentence: 'The caterpillar undergoes a metamorphosis into a butterfly.' },
-        { word: 'nostalgia',definition: 'A sentimental longing for the past.',                          sentence: 'Looking at old photos filled her with nostalgia.' },
+        { word: 'boat',       definition: 'A small vessel used for travelling on water.',                     sentence: 'They rowed the boat across the calm lake.' },
+        { word: 'ocean',      definition: 'A vast area of saltwater that covers most of the Earth.',          sentence: 'The ship sailed across the ocean for three weeks.' },
+        { word: 'necklace',   definition: 'A piece of jewellery worn around the neck.',                       sentence: 'She received a gold necklace as a birthday gift.' },
+        { word: 'boulevard',  definition: 'A wide road in a town or city, often with trees on either side.',  sentence: 'They walked slowly down the tree-lined boulevard.' },
+        { word: 'silhouette', definition: 'A dark shape or outline seen against a lighter background.',       sentence: 'The silhouette of the tree stood out against the sunset.' },
     ],
 ];
 
@@ -284,14 +285,23 @@ document.getElementById('speakerBtn').addEventListener('click', () => {
 document.getElementById('defBtn').addEventListener('click', () => {
     const el = document.getElementById('defText');
     if (el.style.display === 'block') { el.style.display = 'none'; return; }
-    el.textContent   = todaySet[state.round].definition;
+    const word       = todaySet[state.round].word;
+    const definition = todaySet[state.round].definition;
+    const blanked    = definition.replace(new RegExp(word, 'gi'), '_'.repeat(word.length));
+    el.textContent   = blanked;
     el.style.display = 'block';
 });
 
 document.getElementById('senBtn').addEventListener('click', () => {
     const el = document.getElementById('senText');
     if (el.style.display === 'block') { el.style.display = 'none'; return; }
-    el.textContent   = todaySet[state.round].sentence;
+    const word     = todaySet[state.round].word;
+    const sentence = todaySet[state.round].sentence;
+    // Replace the target word with underscores so it can't be read
+    const blanked  = sentence.replace(new RegExp(word, 'gi'), '_'.repeat(word.length));
+    // Speak the real sentence aloud (that's the point — you hear it, don't read it)
+    speakWord(sentence);
+    el.textContent   = blanked;
     el.style.display = 'block';
 });
 

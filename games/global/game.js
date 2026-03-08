@@ -175,8 +175,32 @@ const COUNTRIES = [
     { name: "Eswatini",                  code: 748,  lat: -26.52, lon:   31.47 },
     { name: "Lesotho",                   code: 426,  lat: -29.61, lon:   28.23 },
     { name: "Madagascar",                code: 450,  lat: -18.77, lon:   46.87 },
-    { name: "Mozambique",                code: 508,  lat: -18.67, lon:   35.53 },
     { name: "Cape Verde",                code: 132,  lat:  16.54, lon:  -24.01 },
+    { name: "Sao Tome and Principe",     code: 678,  lat:   0.19, lon:    6.61 },
+    { name: "Comoros",                   code: 174,  lat: -11.65, lon:   43.33 },
+    { name: "Seychelles",                code: 690,  lat:  -4.68, lon:   55.49 },
+    { name: "Mauritius",                 code: 480,  lat: -20.35, lon:   57.55 },
+
+    // Small island nations — Caribbean
+    { name: "Bahamas",                   code: 44,   lat:  25.03, lon:  -77.40 },
+    { name: "Barbados",                  code: 52,   lat:  13.19, lon:  -59.54 },
+    { name: "Antigua and Barbuda",       code: 28,   lat:  17.06, lon:  -61.80 },
+    { name: "Dominica",                  code: 212,  lat:  15.41, lon:  -61.37 },
+    { name: "Grenada",                   code: 308,  lat:  12.12, lon:  -61.68 },
+    { name: "Saint Lucia",               code: 662,  lat:  13.91, lon:  -60.98 },
+    { name: "Saint Vincent and the Grenadines", code: 670, lat: 12.98, lon: -61.29 },
+    { name: "Saint Kitts and Nevis",     code: 659,  lat:  17.36, lon:  -62.78 },
+
+    // Small European nations
+    { name: "Andorra",                   code: 20,   lat:  42.55, lon:    1.60 },
+    { name: "Monaco",                    code: 492,  lat:  43.74, lon:    7.41 },
+    { name: "San Marino",                code: 674,  lat:  43.94, lon:   12.46 },
+    { name: "Liechtenstein",             code: 438,  lat:  47.17, lon:    9.56 },
+    { name: "Malta",                     code: 470,  lat:  35.94, lon:   14.38 },
+    { name: "Cyprus",                    code: 196,  lat:  35.13, lon:   33.43 },
+
+    // Asia
+    { name: "Maldives",                  code: 462,  lat:   3.20, lon:   73.22 },
 
     // Oceania
     { name: "Australia",                 code: 36,   lat: -25.27, lon:  133.78 },
@@ -185,7 +209,36 @@ const COUNTRIES = [
     { name: "Fiji",                      code: 242,  lat: -17.71, lon:  178.07 },
     { name: "Vanuatu",                   code: 548,  lat: -15.38, lon:  166.96 },
     { name: "Solomon Islands",           code: 90,   lat:  -9.65, lon:  160.16 },
+    { name: "Samoa",                     code: 882,  lat: -13.76, lon: -172.10 },
+    { name: "Tonga",                     code: 776,  lat: -21.18, lon: -175.20 },
+    { name: "Kiribati",                  code: 296,  lat:  -3.37, lon: -168.73 },
+    { name: "Micronesia",                code: 583,  lat:   7.43, lon:  150.55 },
+    { name: "Palau",                     code: 585,  lat:   7.52, lon:  134.58 },
+    { name: "Marshall Islands",          code: 584,  lat:   7.13, lon:  171.18 },
+    { name: "Nauru",                     code: 520,  lat:  -0.53, lon:  166.92 },
+    { name: "Tuvalu",                    code: 798,  lat:  -7.11, lon:  177.65 },
 ];
+
+// ============================================
+// DIFFICULTY MODE
+// ============================================
+let hardMode = localStorage.getItem('geolock_hard') === 'true';
+
+function updateModeBtn() {
+    const btn = document.getElementById('modeBtn');
+    if (!btn) return;
+    btn.textContent = hardMode ? '🔒 Hard mode' : '🧭 Easy mode';
+    btn.style.color = hardMode ? '#c84020' : '#55b725';
+}
+
+document.getElementById('modeBtn').addEventListener('click', () => {
+    hardMode = !hardMode;
+    localStorage.setItem('geolock_hard', hardMode);
+    updateModeBtn();
+    render();
+});
+
+updateModeBtn();
 
 // ============================================
 // DAILY COUNTRY
@@ -352,7 +405,7 @@ async function initGlobe() {
     svgEl.on('wheel', event => {
         event.preventDefault();
         const factor   = event.deltaY > 0 ? 0.92 : 1.08;
-        const minScale = radius * 0.7;
+        const minScale = radius;
         const maxScale = radius * 4;
         projection.scale(Math.max(minScale, Math.min(maxScale, projection.scale() * factor)));
         svgEl.selectAll('path').attr('d', pathFn);
@@ -378,7 +431,7 @@ async function initGlobe() {
             );
             const factor   = newDist / pinchDist;
             pinchDist      = newDist;
-            const minScale = radius * 0.7;
+            const minScale = radius;
             const maxScale = radius * 4;
             projection.scale(Math.max(minScale, Math.min(maxScale, projection.scale() * factor)));
             svgEl.selectAll('path').attr('d', pathFn);
@@ -537,7 +590,7 @@ function render() {
 
         const arrow     = document.createElement('span');
         arrow.className = 'globle-arrow';
-        arrow.textContent = (g.km === 0) ? '' : getArrow(g.bearing);
+        arrow.textContent = (g.km === 0 || hardMode) ? '' : getArrow(g.bearing);
 
         const dist      = document.createElement('span');
         dist.className  = 'globle-distance';

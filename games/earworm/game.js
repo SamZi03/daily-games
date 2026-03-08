@@ -341,6 +341,7 @@ let state = loadState();
 // AUDIO PLAYER
 // ============================================
 const audio       = document.getElementById('audioPlayer');
+audio.volume = 0.35;
 const playBtn     = document.getElementById('playBtn');
 const clipLabel   = document.getElementById('clipSeconds');
 const audioNote   = document.getElementById('audioNote');

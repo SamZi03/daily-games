@@ -796,7 +796,7 @@ h1, h2, h3, h4 {
 
 .clip-timer {
     font-size: 13px;
-    color: var(--muted);
+    color: var(--text);
     margin-bottom: 14px;
 }
 
@@ -1431,6 +1431,23 @@ h1, h2, h3, h4 {
 
 #globeContainer:active { cursor: grabbing; }
 
+.globle-mode-wrap {
+    text-align: center;
+    margin: 8px 0 4px;
+}
+
+.globle-mode-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #55b725;
+    transition: opacity 0.2s;
+}
+.globle-mode-btn:hover { opacity: 0.75; }
+
 .globle-drag-hint {
     font-size: 11px;
     color: var(--muted);
@@ -1478,14 +1495,14 @@ h1, h2, h3, h4 {
 }
 
 .globle-distance {
-    color: var(--muted);
+    color: var(--text);
     font-size: 12px;
     white-space: nowrap;
 }
 
 .globle-temp-label {
     font-size: 11px;
-    color: var(--muted);
+    color: var(--text);
     min-width: 56px;
     text-align: right;
 }
