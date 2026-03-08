@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpellLock - Streaks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="stylesheet" href="../../css/style.css?v=3">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🐝 SpellLock</h2>
+    </header>
+
+    <div class="game-container">
+        <h1 class="game-big-title">SpellLock</h1>
+        <p class="game-subtitle">Listen and spell the word</p>
+
+        <div class="bee-round-bar">
+            <div class="bee-round-label">Round</div>
+            <div class="bee-round-tabs" id="roundTabs"></div>
+            <div class="bee-round-pointer" id="roundPointer"></div>
+        </div>
+
+        <button class="bee-speaker-btn" id="speakerBtn">&#128266;</button>
+        <p class="bee-prompt">Spell the word.</p>
+
+        <div class="bee-hints">
+            <button class="bee-hint-btn" id="defBtn">Definition</button>
+            <button class="bee-hint-btn" id="senBtn">Sentence</button>
+        </div>
+        <div class="bee-hint-text" id="defText"></div>
+        <div class="bee-hint-text" id="senText"></div>
+
+        <div class="bee-input-display" id="inputDisplay">&nbsp;</div>
+        <div class="bee-result-row" id="resultRow"></div>
+
+        <div class="kb-wrap" id="keyboard"></div>
+
+        <div class="result-box" id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="../../js/app.js?v=2"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

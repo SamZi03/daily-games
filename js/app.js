@@ -6,44 +6,68 @@
 // ============================================
 const GAMES = [
     {
-        id: 'heardle',
-        title: 'Heardle',
+        id: 'earlock',
+        title: 'EarLock',
         description: 'Guess the song from a short audio clip. Each wrong guess reveals a longer clip.',
         icon: '🎵',
-        url: 'games/heardle/index.html',
+        url: 'games/earworm/index.html',
         active: true
     },
     {
-        id: 'higher-lower',
-        title: 'Higher or Lower',
+        id: 'statlock',
+        title: 'StatLock',
         description: 'Which song has more Spotify streams? Score as many in a row as you can.',
         icon: '📈',
         url: 'games/higher-lower/index.html',
         active: true
     },
     {
-        id: 'cover',
-        title: 'Cover',
+        id: 'coverlock',
+        title: 'CoverLock',
         description: 'Guess the song from its album artwork. The cover gets clearer with each guess.',
         icon: '🎨',
         url: 'games/cover/index.html',
         active: true
     },
     {
-        id: 'lyrics',
-        title: 'Lyrics',
-        description: 'Guess the song from its lyrics. One line revealed at a time.',
-        icon: '📝',
-        url: 'games/lyrics/index.html',
+        id: 'lyriclock',
+        title: 'LyricLock',
+        description: 'Guess the song from clues — duration, genre, year, album, artist revealed one by one.',
+        icon: '💡',
+        url: 'games/recall/index.html',
         active: true
     },
     {
-        id: 'globle',
-        title: 'Globle',
-        description: 'Guess the mystery country. The globe heats up as you get closer.',
+        id: 'lexilock',
+        title: 'LexiLock',
+        description: 'Guess the hidden word in 6 tries. Choose from 3 to 7 letter words.',
+        icon: '🔤',
+        url: 'games/lexico/index.html',
+        active: true
+    },
+    {
+        id: 'spelllock',
+        title: 'SpellLock',
+        description: 'Listen to a word and spell it correctly. Five words, five rounds.',
+        icon: '🐝',
+        url: 'games/spellcast/index.html',
+        active: true
+    },
+    {
+        id: 'geolock',
+        title: 'GeoLock',
+        description: 'Guess the mystery country. Countries glow hotter the closer you get.',
         icon: '🌍',
-        url: 'games/globle/index.html',
-        active: false
+        url: 'games/global/index.html',
+        active: true
+    },
+    {
+        id: 'cluelock',
+        title: 'ClueLock',
+        description: 'Type any word and get a score showing how close it is to the mystery word.',
+        icon: '🔍',
+        url: 'games/clueless/index.html',
+        active: true
     }
 ];
 
@@ -111,6 +135,61 @@ function hasPlayedGame(gameId) {
 }
 
 // ============================================
+// CARD VISUALS — one per game
+// ============================================
+const CARD_VISUALS = {
+    earlock: `
+        <div class="cv-earlock">
+            <div class="cv-ear-bar"><div class="cv-ear-fill"></div></div>
+            <div class="cv-ear-play">▶</div>
+        </div>`,
+    statlock: `
+        <div class="cv-statlock">
+            <span class="cv-stat-up">↑</span>
+            <span class="cv-stat-down">↓</span>
+        </div>`,
+    coverlock: `
+        <div class="cv-coverlock">
+            <div class="cv-cover-art"></div>
+        </div>`,
+    lyriclock: `
+        <div class="cv-lyriclock">
+            <div class="cv-lbar cv-lb-green"></div>
+            <div class="cv-lbar cv-lb-green"></div>
+            <div class="cv-lbar cv-lb-yellow"></div>
+            <div class="cv-lbar cv-lb-red"></div>
+            <div class="cv-lbar cv-lb-empty"></div>
+        </div>`,
+    lexilock: `
+        <div class="cv-lexilock">
+            <div class="cv-lt cv-lt-g">S</div>
+            <div class="cv-lt cv-lt-y">T</div>
+            <div class="cv-lt cv-lt-e">R</div>
+            <div class="cv-lt cv-lt-g">E</div>
+            <div class="cv-lt cv-lt-e">K</div>
+        </div>`,
+    spelllock: `
+        <div class="cv-spelllock">
+            <span class="cv-spk">🔊</span>
+            <span class="cv-qqq">???</span>
+        </div>`,
+    geolock: `
+        <div class="cv-geolock">
+            <span class="cv-earth">🌍</span>
+            <div class="cv-geo-dots">
+                <span style="background:#6a7a3a"></span>
+                <span style="background:#c8981a"></span>
+                <span style="background:#c62121"></span>
+            </div>
+        </div>`,
+    cluelock: `
+        <div class="cv-cluelock">
+            <span class="cv-clue-search">🔍</span>
+            <div class="cv-clue-tempbar"></div>
+        </div>`,
+};
+
+// ============================================
 // RENDER HOME PAGE
 // ============================================
 function renderHomePage() {
@@ -120,27 +199,23 @@ function renderHomePage() {
     const streakEl = document.getElementById('streakCount');
     if (streakEl) streakEl.textContent = getStreak().count;
 
-    const played = getPlayedToday();
-    const activeGames = GAMES.filter(g => g.active);
-    const completedEl = document.getElementById('gamesCompletedText');
-    if (completedEl) {
-        completedEl.textContent = `${played.length} of ${activeGames.length} games completed today`;
-    }
-
     const grid = document.getElementById('gamesGrid');
     if (!grid) return;
 
     GAMES.forEach(game => {
-        const done = hasPlayedGame(game.id);
-        const card = document.createElement('a');
-        card.href = game.active ? game.url : '#';
+        const done   = hasPlayedGame(game.id);
+        const card   = document.createElement('a');
+        card.href    = game.active ? game.url : '#';
         card.className = `game-card${done ? ' played' : ''}${!game.active ? ' coming-soon' : ''}`;
 
+        const visual = CARD_VISUALS[game.id] || '';
         card.innerHTML = `
-            <span class="card-icon">${game.icon}</span>
-            <div class="card-title">${game.title}</div>
-            <div class="card-description">${game.description}</div>
-            <div class="card-play-btn">${done ? 'View Result' : 'Play'}</div>
+            <div class="card-top">
+                <div class="card-title">${game.title}</div>
+                ${done ? '<span class="card-done-check">✓</span>' : ''}
+                ${!game.active ? '<span class="card-soon-badge">Soon</span>' : ''}
+            </div>
+            <div class="card-visual">${visual}</div>
         `;
 
         if (!game.active) {
@@ -153,13 +228,14 @@ function renderHomePage() {
 
 function resetForTesting() {
     const today = getTodayString();
-    // Clear today's played games and all game saves
+    // Clear played-games record for today
     const stored = JSON.parse(localStorage.getItem('playedGames') || '{}');
     delete stored[today];
     localStorage.setItem('playedGames', JSON.stringify(stored));
-    ['heardle', 'higher-lower', 'cover', 'lyrics'].forEach(id => {
-        localStorage.removeItem(id + '_' + today);
-    });
+    // Clear every localStorage key that contains today's date (covers all games + Lexico per-length keys)
+    Object.keys(localStorage)
+        .filter(k => k.includes(today))
+        .forEach(k => localStorage.removeItem(k));
     location.reload();
 }
 

@@ -78,7 +78,10 @@
     font-size: 16px;
     font-weight: 700;
     color: var(--text);
+    text-decoration: none;
 }
+
+.sidebar-title:hover { color: var(--muted); }
 
 .sidebar-close {
     background: none;
@@ -144,6 +147,23 @@
     text-transform: uppercase;
 }
 
+.sidebar-game-card.sidebar-game-done {
+    border-color: var(--green);
+    background: rgba(85, 183, 37, 0.08);
+}
+
+.sidebar-done-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--green);
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -186,25 +206,23 @@ h1, h2, h3, h4 {
 }
 
 .header-inner {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 64px;
+    position: relative;
 }
 
 .site-title {
-    font-size: 22px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 26px;
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.5px;
-}
-
-.site-tagline {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 1px;
+    pointer-events: none;
 }
 
 .streak-display {
@@ -215,6 +233,7 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 8px 14px;
+    margin-left: auto;
 }
 
 .streak-icon { font-size: 20px; }
@@ -234,81 +253,75 @@ h1, h2, h3, h4 {
     letter-spacing: 0.5px;
 }
 
-.date-bar {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 10px 0;
-    color: var(--muted);
-    font-size: 13px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    border-top: 1px solid var(--border);
-}
-
 /* =====================
    HOME PAGE - GRID
    ===================== */
 .main-content {
-    max-width: 960px;
+    max-width: 1100px;
     margin: 32px auto;
     padding: 0 24px;
 }
 
-.games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+.home-date {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+/* ---- Game card ---- */
 .game-card {
     background: var(--tile);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    transition: background 0.15s, border-color 0.15s, transform 0.18s;
     text-decoration: none;
-    display: block;
-    position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    min-height: 200px;
 }
 
 .game-card:hover {
     background: var(--tile2);
     border-color: #555;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
-.game-card.played {
-    border-color: var(--green);
+.game-card.played  { border-color: var(--green); }
+.game-card.coming-soon { opacity: 0.35; cursor: not-allowed; }
+
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 0;
 }
 
-.game-card.played::after {
-    content: 'Done';
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    color: var(--text);
+}
+
+.card-done-check {
     background: var(--green);
     color: #000;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    padding: 2px 8px;
+    padding: 2px 9px;
     border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-.game-card.coming-soon {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-
-.game-card.coming-soon::after {
-    content: 'Soon';
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.card-soon-badge {
     background: var(--muted);
     color: var(--text);
     font-size: 10px;
@@ -318,49 +331,200 @@ h1, h2, h3, h4 {
     text-transform: uppercase;
 }
 
-.card-icon {
-    font-size: 28px;
-    margin-bottom: 10px;
+/* ---- Card visual area ---- */
+.card-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px 20px;
+}
+
+/* EarLock */
+.cv-earlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+.cv-ear-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.cv-ear-fill {
+    width: 35%;
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+}
+.cv-ear-play {
+    width: 52px;
+    height: 52px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding-left: 3px;
+}
+
+/* StatLock */
+.cv-statlock {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+.cv-stat-up {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+}
+.cv-stat-down {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+}
+
+/* CoverLock */
+.cv-coverlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cv-cover-art {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4a3060 0%, #7a3080 30%, #3a6080 70%, #2a4060 100%);
+    filter: blur(8px);
+    border: 1px solid var(--border);
+}
+
+/* LyricLock */
+.cv-lyriclock {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+}
+.cv-lbar {
+    height: 10px;
+    border-radius: 5px;
+}
+.cv-lb-green  { background: var(--green);   width: 90%; }
+.cv-lb-yellow { background: #b59f3b;         width: 70%; }
+.cv-lb-red    { background: var(--red);      width: 55%; }
+.cv-lb-empty  { background: var(--border);   width: 40%; }
+
+/* LexiLock */
+.cv-lexilock {
+    display: flex;
+    gap: 6px;
+}
+.cv-lt {
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    color: #fff;
+}
+.cv-lt-g { background: var(--green); }
+.cv-lt-y { background: #b59f3b; }
+.cv-lt-e { background: #3a3d40; border: 1px solid var(--border); color: var(--muted); }
+
+/* SpellLock */
+.cv-spelllock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.cv-spk  { font-size: 52px; line-height: 1; }
+.cv-qqq  {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    color: var(--muted);
+    letter-spacing: 4px;
+}
+
+/* GeoLock */
+.cv-geolock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.cv-earth { font-size: 60px; line-height: 1; }
+.cv-geo-dots {
+    display: flex;
+    gap: 8px;
+}
+.cv-geo-dots span {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
     display: block;
 }
 
-.card-title {
-    font-size: 17px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    font-family: 'Clash Display', sans-serif;
-    color: var(--text);
+/* ClueLock card visual */
+.cv-cluelock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+.cv-clue-search { font-size: 52px; line-height: 1; }
+.cv-clue-tempbar {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #3a8dca 0%, #c84020 35%, #dac316 65%, #55b725 100%);
 }
 
-.card-description {
+/* ---- Ad banner ---- */
+.ad-banner-wrap {
+    max-width: 1100px;
+    margin: 8px auto 0;
+    padding: 0 24px;
+}
+
+.ad-placeholder {
+    width: 100%;
+    height: 90px;
+    background: var(--tile);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.card-play-btn {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 7px 16px;
-    background: var(--text);
-    color: var(--bg);
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.game-card.played .card-play-btn {
-    background: var(--green);
-    color: #000;
-}
-
+/* ---- Footer ---- */
 .site-footer {
     text-align: center;
-    padding: 40px 24px;
+    padding: 32px 24px;
     color: var(--muted);
     font-size: 13px;
-    border-top: 1px solid var(--border);
-    margin-top: 40px;
+    margin-top: 24px;
 }
 
 .reset-btn {
@@ -392,6 +556,37 @@ h1, h2, h3, h4 {
     background: var(--bg);
 }
 
+/* Side ad slots — hidden until real ads are served */
+.ad-side {
+    display: none;
+    width: 160px;
+    min-height: 600px;
+    background: var(--tile);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.game-page-wrap {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 24px;
+}
+
+.game-page-wrap .ad-side { display: flex; }
+
+@media (max-width: 900px) {
+    .game-page-wrap .ad-side { display: none; }
+}
+
 .game-header {
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
@@ -414,16 +609,24 @@ h1, h2, h3, h4 {
 .back-btn:hover { color: var(--text); }
 
 .game-header h2 {
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'Clash Display', sans-serif;
-    letter-spacing: -0.3px;
+    display: none;
 }
 
 .game-container {
     max-width: 560px;
-    margin: 32px auto;
+    margin: 16px auto 32px;
     padding: 0 24px;
+}
+
+.game-big-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: clamp(52px, 10vw, 80px);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin: 0 0 8px 0;
+    letter-spacing: -1px;
+    line-height: 1;
 }
 
 .game-subtitle {
@@ -603,21 +806,32 @@ h1, h2, h3, h4 {
 }
 
 .progress-bar-wrap {
+    position: relative;
     width: 100%;
-    height: 4px;
+    height: 6px;
     background: var(--border);
-    border-radius: 999px;
-    overflow: hidden;
+    border-radius: 3px;
     margin-bottom: 18px;
+    overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
     width: 0%;
     background: var(--text);
-    border-radius: 999px;
 }
 
+.progress-marker {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: var(--bg);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Legacy .play-btn kept for compatibility */
 .play-btn {
     background: var(--text);
     color: var(--bg);
@@ -630,10 +844,115 @@ h1, h2, h3, h4 {
     transition: opacity 0.15s, transform 0.1s;
     font-family: 'DM Sans', sans-serif;
 }
-
 .play-btn:hover   { opacity: 0.85; }
 .play-btn:active  { transform: scale(0.97); }
 .play-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* =====================
+   HEARDLE REDESIGN
+   ===================== */
+.heardle-container {
+    max-width: 540px;
+}
+
+/* 6 stacked guess rows */
+.heardle-guess-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 16px;
+}
+
+.heardle-guess-row {
+    height: 46px;
+    background: var(--tile);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+}
+
+.heardle-guess-row.skipped {
+    color: var(--muted);
+    font-style: italic;
+}
+
+.heardle-guess-row.wrong {
+    color: var(--text);
+}
+
+.heardle-guess-row.correct {
+    background: var(--green);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Audio section */
+.heardle-audio-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* Progress bar with pointer above */
+.heardle-progress-outer {
+    position: relative;
+    width: 100%;
+    padding-top: 26px;
+    margin-bottom: 4px;
+}
+
+.heardle-clip-pointer {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.2;
+    pointer-events: none;
+    transition: left 0.3s ease;
+}
+
+.heardle-pointer-arrow {
+    font-size: 7px;
+    margin-top: 1px;
+    color: var(--muted);
+}
+
+/* Override progress bar margin inside heardle */
+.heardle-audio-section .progress-bar-wrap {
+    margin-bottom: 0;
+}
+
+/* Big circular play button */
+.heardle-play-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: opacity 0.15s, transform 0.1s;
+    padding-left: 4px; /* optical center for ▶ */
+}
+
+.heardle-play-btn:hover   { opacity: 0.85; }
+.heardle-play-btn:active  { transform: scale(0.95); }
+.heardle-play-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .no-audio-note {
     font-size: 12px;
@@ -782,4 +1101,606 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: center;
     font-size: 60px;
+}
+
+/* =====================
+   ON-SCREEN KEYBOARD
+   (Spelling Bee + Lexico)
+   ===================== */
+.kb-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 500px;
+    margin: 12px auto 0;
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.kb-key {
+    height: 54px;
+    flex: 1;
+    max-width: 40px;
+    min-width: 28px;
+    background: #3a3d40;
+    color: var(--text);
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s;
+    font-family: 'DM Sans', sans-serif;
+    user-select: none;
+}
+
+.kb-key:hover  { background: #4a4e52; }
+.kb-key:active { transform: scale(0.93); }
+
+.kb-key.wide {
+    max-width: 60px;
+    min-width: 50px;
+    font-size: 12px;
+}
+
+/* Lexico letter state colours */
+.kb-key.correct { background: var(--green); color: #fff; }
+.kb-key.present { background: #b59f3b;      color: #fff; }
+.kb-key.absent  { background: #1e2022;      color: var(--muted); }
+
+/* =====================
+   LEXICO GAME
+   ===================== */
+.lexico-length-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.lexico-tab {
+    width: 48px;
+    height: 38px;
+    background: var(--tile);
+    border: none;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, color 0.15s;
+}
+
+.lexico-tab.active       { background: var(--text);  color: var(--bg); }
+.lexico-tab.done-correct { background: var(--green); color: #fff; }
+.lexico-tab.done-wrong   { background: #2a2a2a;      color: var(--muted); }
+
+.lexico-grid-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.lexico-grid {
+    display: grid;
+    gap: 5px;
+}
+
+.lexico-cell {
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    text-transform: uppercase;
+    color: var(--text);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.lexico-cell.active  { border-color: var(--text); }
+.lexico-cell.correct { background: var(--green); border-color: var(--green); color: #fff; }
+.lexico-cell.present { background: #b59f3b;      border-color: #b59f3b;     color: #fff; }
+.lexico-cell.absent  { background: #262829;      border-color: #262829;     color: var(--muted); }
+
+.lexico-message {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    min-height: 18px;
+}
+
+/* =====================
+   SPELLING BEE GAME
+   ===================== */
+.bee-round-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.bee-round-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.bee-round-tabs {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bee-round-tab {
+    width: 54px;
+    height: 44px;
+    background: var(--tile);
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: default;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+}
+
+.bee-round-tab:last-child { border-right: none; }
+.bee-round-tab.active     { background: var(--text);  color: var(--bg); }
+.bee-round-tab.correct    { background: var(--green); color: #fff; }
+.bee-round-tab.wrong      { background: #2a2a2a;      color: var(--muted); }
+
+.bee-round-pointer {
+    display: flex;
+    margin-top: 3px;
+}
+
+.bee-round-pointer span {
+    width: 54px;
+    text-align: center;
+    font-size: 9px;
+    color: var(--muted);
+}
+
+.bee-speaker-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--green);
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.bee-speaker-btn:hover  { opacity: 0.85; }
+.bee-speaker-btn:active { transform: scale(0.95); }
+
+.bee-prompt {
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.bee-hints {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.bee-hint-btn {
+    padding: 7px 18px;
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, color 0.15s;
+}
+
+.bee-hint-btn:hover { background: #3a3d40; color: var(--text); }
+
+.bee-hint-text {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--tile);
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin: 0 0 12px;
+    display: none;
+}
+
+.bee-input-display {
+    font-size: 34px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    text-align: center;
+    min-height: 44px;
+    margin-bottom: 4px;
+    color: var(--text);
+    transition: color 0.25s;
+}
+
+.bee-input-display.correct { color: var(--green); }
+.bee-input-display.wrong   { color: var(--red);   }
+
+.bee-result-row {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 20px;
+    margin-bottom: 8px;
+}
+
+.bee-final-words {
+    margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bee-final-row {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    background: var(--tile);
+    color: var(--muted);
+}
+
+.bee-final-row.correct { background: var(--green); color: #fff; }
+.bee-final-row.wrong   { background: #2a2a2a;      color: var(--muted); }
+
+/* =====================
+   GLOBLE GAME
+   ===================== */
+.globle-container {
+    max-width: 560px;
+}
+
+.globle-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.globle-legend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.gleg-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 4px;
+}
+
+.globle-globe-wrap {
+    margin: 0 auto 16px;
+    max-width: 420px;
+    text-align: center;
+}
+
+#globeContainer {
+    width: 100%;
+    cursor: grab;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#globeContainer:active { cursor: grabbing; }
+
+.globle-drag-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    opacity: 0.6;
+}
+
+.globle-guess-history {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.globle-guess-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    background: var(--tile);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.globle-temp-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.globle-guess-name {
+    flex: 1;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.globle-arrow {
+    font-size: 16px;
+    color: var(--text);
+    min-width: 18px;
+    text-align: center;
+}
+
+.globle-distance {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.globle-temp-label {
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 56px;
+    text-align: right;
+}
+
+.globle-msg {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-6px); }
+    75%       { transform: translateX(6px); }
+}
+.shake { animation: shake 0.35s ease; }
+
+/* =====================
+   CLUELOCK GAME
+   ===================== */
+.cl-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 20px;
+}
+
+.cl-message {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 18px;
+    margin: 6px 0;
+}
+
+.cl-guesses {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.cl-guess-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.cl-guess-row.cl-new {
+    border-color: #555;
+    animation: cl-pop 0.3s ease;
+}
+
+@keyframes cl-pop {
+    0%   { transform: scale(0.97); opacity: 0.6; }
+    100% { transform: scale(1);    opacity: 1; }
+}
+
+.cl-word {
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    font-size: 15px;
+    min-width: 110px;
+    color: var(--text);
+    text-transform: capitalize;
+}
+
+.cl-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.cl-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.cl-score {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Clash Display', sans-serif;
+    min-width: 32px;
+    text-align: right;
+}
+
+.cl-label {
+    font-size: 11px;
+    min-width: 68px;
+    text-align: right;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cl-clue-section {
+    margin: 12px 0 4px;
+    text-align: center;
+}
+
+.cl-clue-btn {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+.cl-clue-btn:hover {
+    border-color: #dac316;
+    color: #dac316;
+}
+
+.cl-clue-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cl-clue-item {
+    background: rgba(218,195,22,0.08);
+    border: 1px solid rgba(218,195,22,0.25);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: var(--text);
+    text-align: left;
+    margin: 0;
+}
+
+/* =====================
+   RECALL GAME
+   ===================== */
+.recall-clues {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.recall-clue-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--tile);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.recall-clue-row.revealed {
+    background: #1e2a1e;
+    border-left: 3px solid var(--green);
+}
+
+.recall-clue-row.next {
+    border-left: 3px solid var(--border);
+}
+
+.recall-clue-row.locked {
+    opacity: 0.45;
+}
+
+.recall-clue-label {
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Clash Display', sans-serif;
+    font-size: 13px;
+    min-width: 70px;
+}
+
+.recall-clue-value {
+    color: var(--text);
+    text-align: right;
+}
+
+.recall-muted {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.recall-loading {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+/* EarWorm full preview player in result box */
+.full-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0 8px;
+    width: 100%;
+}
+
+.full-player .progress-bar-wrap {
+    margin-bottom: 0;
 }

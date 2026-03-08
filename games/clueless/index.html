@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClueLock - Streaks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="stylesheet" href="../../css/style.css?v=3">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🔍 ClueLock</h2>
+    </header>
+
+    <div class="game-container">
+        <h1 class="game-big-title">ClueLock</h1>
+        <p class="game-subtitle">Type any word — the closer to the mystery word, the hotter your score</p>
+
+        <div class="cl-stats">
+            <span id="guessCountDisplay">0 guesses</span>
+            <span id="bestScoreDisplay"></span>
+        </div>
+
+        <div id="inputSection">
+            <div class="guess-input-wrap">
+                <input type="text" class="guess-input" id="guessInput"
+                    placeholder="Type any word..." autocomplete="off" spellcheck="false">
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
+            </div>
+        </div>
+
+        <div class="cl-clue-section" id="clueSection">
+            <button class="cl-clue-btn" id="clueBtn">💡 Reveal Clue 1</button>
+            <div class="cl-clue-list" id="clueList"></div>
+        </div>
+
+        <p class="cl-message" id="clMessage"></p>
+
+        <div class="cl-guesses" id="clGuesses"></div>
+
+        <div class="result-box" id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="../../js/app.js?v=2"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

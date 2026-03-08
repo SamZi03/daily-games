@@ -17,18 +17,21 @@ function buildSidebar() {
     sidebar.className = 'sidebar';
     sidebar.innerHTML = `
         <div class="sidebar-header">
-            <span class="sidebar-title">Games</span>
+            <a href="${base}index.html" class="sidebar-title">Streaks</a>
             <button class="sidebar-close" onclick="closeSidebar()">✕</button>
         </div>
         <div class="sidebar-games">
-            ${GAMES.map(game => `
+            ${GAMES.map(game => {
+                const done = hasPlayedGame(game.id);
+                return `
                 <a href="${base}${game.url}"
-                   class="sidebar-game-card ${!game.active ? 'sidebar-coming-soon' : ''}"
+                   class="sidebar-game-card ${!game.active ? 'sidebar-coming-soon' : ''} ${done ? 'sidebar-game-done' : ''}"
                    ${!game.active ? 'onclick="return false"' : ''}>
                     <div class="sidebar-game-title">${game.title}</div>
+                    ${done ? '<span class="sidebar-done-badge">✓</span>' : ''}
                     ${!game.active ? '<span class="sidebar-soon-badge">Soon</span>' : ''}
-                </a>
-            `).join('')}
+                </a>`;
+            }).join('')}
         </div>
     `;
     document.body.appendChild(sidebar);

@@ -3,33 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyrics - DailyStreak</title>
+    <title>EarLock - Streaks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://api.fontshare.com">
-    <link rel="stylesheet" href="../../css/style.css?v=2">
+    <link rel="stylesheet" href="../../css/style.css?v=3">
 </head>
 <body class="game-page">
 
     <header class="game-header">
         <a href="../../index.html" class="back-btn">← Back</a>
-        <h2>📝 Lyrics</h2>
+        <h2>🎵 EarLock</h2>
     </header>
 
-    <div class="game-container">
-        <p class="game-subtitle">Guess the song from its lyrics</p>
+    <div class="game-container heardle-container">
 
-        <div class="lyrics-section" id="lyricsSection">
-            <p class="lyrics-hint">Lines are revealed one at a time with each guess</p>
+        <h1 class="game-big-title">EarLock</h1>
+
+        <div class="heardle-guess-rows" id="guessRows"></div>
+
+        <div class="heardle-audio-section" id="audioSection">
+            <div class="heardle-progress-outer">
+                <div class="heardle-clip-pointer" id="clipPointer">
+                    <span id="clipSeconds">0.1s</span>
+                    <span class="heardle-pointer-arrow">▼</span>
+                </div>
+                <div class="progress-bar-wrap" id="progressWrap">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+            <button class="heardle-play-btn" id="playBtn">▶</button>
+            <audio id="audioPlayer"></audio>
+            <p class="no-audio-note" id="audioNote"></p>
         </div>
-
-        <div class="attempts-display" id="attemptsDisplay"></div>
-        <div class="guesses-list" id="guessesList"></div>
 
         <div id="inputSection">
             <div class="guess-input-wrap">
                 <input type="text" class="guess-input" id="guessInput"
-                    placeholder="Type a song name..." autocomplete="off">
+                    placeholder="Search a song..." autocomplete="off">
             </div>
             <div class="autocomplete-dropdown" id="autocomplete"></div>
             <div class="action-buttons">
@@ -41,7 +52,7 @@
         <div class="result-box" id="resultBox" style="display:none;"></div>
     </div>
 
-    <script src="../../js/app.js"></script>
+    <script src="../../js/app.js?v=2"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="game.js"></script>
 </body>

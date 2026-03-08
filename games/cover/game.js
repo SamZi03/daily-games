@@ -123,7 +123,7 @@ function submitGuess(skipped) {
     if (correct || state.attempt >= MAX_ATTEMPTS) {
         state.gameOver = true;
         state.won = correct;
-        markGamePlayed('cover');
+        markGamePlayed('coverlock');
     }
 
     guessInput.value = '';

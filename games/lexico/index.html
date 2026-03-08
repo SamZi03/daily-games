@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatLock - Streaks</title>
+    <title>LexiLock - Streaks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://api.fontshare.com">
@@ -13,19 +13,22 @@
 
     <header class="game-header">
         <a href="../../index.html" class="back-btn">← Back</a>
-        <h2>📈 StatLock</h2>
+        <h2>🔤 LexiLock</h2>
     </header>
 
-    <div class="game-container" style="max-width:700px;">
-        <h1 class="game-big-title">StatLock</h1>
-        <p class="game-subtitle">Does the right song have more or fewer streams?</p>
+    <div class="game-container">
+        <h1 class="game-big-title">LexiLock</h1>
+        <p class="game-subtitle">Guess the word — choose your word length</p>
 
-        <div class="hl-score-bar">
-            <span>Score: <strong id="scoreDisplay">0</strong></span>
-            <span id="questionDisplay">Streak: 0</span>
+        <div class="lexico-length-tabs" id="lengthTabs"></div>
+
+        <div class="lexico-grid-wrap">
+            <div class="lexico-grid" id="lexicoGrid"></div>
         </div>
 
-        <div class="hl-cards" id="hlCards"></div>
+        <p class="lexico-message" id="lexicoMsg"></p>
+
+        <div class="kb-wrap" id="keyboard"></div>
 
         <div class="result-box" id="resultBox" style="display:none;"></div>
     </div>

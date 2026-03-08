@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoLock - Streaks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="stylesheet" href="../../css/style.css?v=3">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🌍 GeoLock</h2>
+    </header>
+
+    <div class="game-container globle-container">
+        <h1 class="game-big-title">GeoLock</h1>
+        <p class="game-subtitle">Guess the mystery country</p>
+
+        <div class="globle-stats">
+            <span id="guessCount">0 guesses</span>
+            <span class="globle-legend">
+                <span class="gleg-dot" style="background:#3a4050"></span>Far
+                <span class="gleg-dot" style="background:#c8981a"></span>Warm
+                <span class="gleg-dot" style="background:#c62121"></span>Hot
+                <span class="gleg-dot" style="background:#55b725"></span>Correct
+            </span>
+        </div>
+
+        <div class="globle-globe-wrap">
+            <div id="globeContainer"></div>
+            <p class="globle-drag-hint">Drag to rotate</p>
+        </div>
+
+        <div class="globle-guess-history" id="guessHistory"></div>
+
+        <div id="inputSection">
+            <div class="guess-input-wrap">
+                <input type="text" class="guess-input" id="countryInput"
+                    placeholder="Type a country name..." autocomplete="off">
+            </div>
+            <div class="autocomplete-dropdown" id="autocomplete"></div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
+            </div>
+        </div>
+
+        <div class="result-box" id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+    <script src="../../js/app.js?v=2"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
