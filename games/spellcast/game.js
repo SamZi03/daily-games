@@ -139,7 +139,7 @@ function checkAnswer() {
             display.textContent = letters.slice(0, i + 1).join('');
             playTick();
             i++;
-            setTimeout(revealLetter, 120);
+            setTimeout(revealLetter, 340);
         } else {
             // All letters shown — pause briefly then show result
             setTimeout(() => {
