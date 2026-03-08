@@ -321,6 +321,14 @@ h1, h2, h3, h4 {
     border-radius: 20px;
 }
 
+.card-streak {
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+}
+
 .card-soon-badge {
     background: var(--muted);
     color: var(--text);
@@ -721,7 +729,8 @@ h1, h2, h3, h4 {
 }
 
 .autocomplete-item:last-child { border-bottom: none; }
-.autocomplete-item:hover { background: var(--tile2); }
+.autocomplete-item:hover,
+.autocomplete-item.active { background: var(--tile2); }
 
 .action-buttons {
     display: flex;
@@ -1102,6 +1111,57 @@ h1, h2, h3, h4 {
     justify-content: center;
     font-size: 60px;
 }
+
+.cover-clues {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 32px;
+    margin-bottom: 12px;
+}
+
+.cover-clue-pill {
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+@keyframes clue-pop {
+    0%   { transform: scale(0.75); opacity: 0; box-shadow: 0 0 0 3px var(--accent); }
+    60%  { transform: scale(1.08); box-shadow: 0 0 0 3px var(--accent); }
+    100% { transform: scale(1);    opacity: 1; box-shadow: 0 0 0 0px transparent; }
+}
+
+.cover-clue-pill.new {
+    animation: clue-pop 0.45s ease-out forwards;
+}
+
+.cover-result-track {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin: 4px 0 12px;
+}
+
+.cover-preview-player {
+    margin: 4px 0 16px;
+}
+
+.cover-play-btn {
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 20px;
+    color: var(--text);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+.cover-play-btn:hover { border-color: var(--accent); }
 
 /* =====================
    ON-SCREEN KEYBOARD
@@ -1720,4 +1780,224 @@ h1, h2, h3, h4 {
 
 .full-player .progress-bar-wrap {
     margin-bottom: 0;
+}
+
+/* =====================
+   SITE FOOTER
+   ===================== */
+.site-footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    letter-spacing: 0.02em;
+}
+
+.site-footer a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.site-footer a:hover { color: var(--text); }
+
+/* =====================
+   DISCOVER PAGE
+   ===================== */
+.disc-main {
+    padding-bottom: 48px;
+}
+
+.disc-hero {
+    text-align: center;
+    padding: 28px 16px 20px;
+}
+
+.disc-title {
+    font-family: 'Clash Display', 'DM Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--text);
+}
+
+.disc-subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 20px;
+}
+
+.disc-search-wrap {
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.disc-search {
+    width: 100%;
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+
+.disc-search:focus { border-color: var(--accent); }
+.disc-search::placeholder { color: var(--muted); }
+
+.disc-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 16px 20px;
+}
+
+.disc-filter-btn {
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.disc-filter-btn:hover { color: var(--text); border-color: var(--text); }
+.disc-filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.disc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.disc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.1s;
+}
+
+.disc-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.disc-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.disc-card-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.disc-cat-tag {
+    font-size: 0.7rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2px 8px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.disc-card-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+.disc-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.disc-card-source {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.disc-play-lnk {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.disc-empty {
+    color: var(--muted);
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 40px 0;
+}
+
+/* Discover CTA on home page */
+.discover-home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 360px;
+    margin: 28px auto 0;
+    padding: 16px 20px;
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.1s;
+}
+
+.discover-home-btn .disc-btn-sub {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+}
+
+.discover-home-btn .disc-btn-arrow {
+    font-size: 1.1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.discover-home-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Updated home footer layout */
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }

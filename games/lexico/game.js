@@ -12,7 +12,7 @@ const WORDS = {
 const LENGTHS      = [3, 4, 5, 6, 7];
 const MAX_GUESSES  = 6;
 
-let activeLen = 3;
+let activeLen = 5;
 let states    = {};
 
 // Load or init state for each length

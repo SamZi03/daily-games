@@ -131,6 +131,7 @@ function checkAnswer() {
     transitioning       = true;
     display.textContent = '\u00A0';
     display.className   = 'bee-input-display'; // clear any old colour class
+    speechSynthesis.cancel(); // stop any in-flight TTS before the reveal starts
 
     // Reveal each letter one by one with a tick sound
     let i = 0;
@@ -153,6 +154,7 @@ function checkAnswer() {
                     resultRow.textContent = 'The word was: ' + target.toUpperCase();
                     playWrong();
                 }
+                setTimeout(() => speakWord(target), 1000);
 
                 saveState(state);
                 renderRoundTabs();
@@ -256,6 +258,7 @@ function render() {
 // ============================================
 document.getElementById('speakerBtn').addEventListener('click', () => {
     if (state.gameOver) return;
+    clearTimeout(autoPlayTimer);
     speakWord(todaySet[state.round].word);
 });
 
@@ -283,6 +286,7 @@ document.getElementById('senBtn').addEventListener('click', () => {
 // INIT
 // ============================================
 render();
+let autoPlayTimer = null;
 if (!state.gameOver) {
-    setTimeout(() => speakWord(todaySet[state.round].word), 600);
+    autoPlayTimer = setTimeout(() => speakWord(todaySet[state.round].word), 600);
 }

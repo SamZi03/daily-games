@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoverLock - Streaks</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://api.fontshare.com">
@@ -18,11 +19,13 @@
 
     <div class="game-container">
         <h1 class="game-big-title">CoverLock</h1>
-        <p class="game-subtitle">Guess the song from its album cover</p>
+        <p class="game-subtitle">Guess the artist from the album cover</p>
 
         <div class="cover-image-wrap">
             <div class="cover-placeholder" id="coverWrap">🎵</div>
         </div>
+
+        <div class="cover-clues" id="coverClues"></div>
 
         <div class="attempts-display" id="attemptsDisplay"></div>
         <div class="guesses-list" id="guessesList"></div>
@@ -30,7 +33,7 @@
         <div id="inputSection">
             <div class="guess-input-wrap">
                 <input type="text" class="guess-input" id="guessInput"
-                    placeholder="Type a song name..." autocomplete="off">
+                    placeholder="Type an artist name..." autocomplete="off">
             </div>
             <div class="autocomplete-dropdown" id="autocomplete"></div>
             <div class="action-buttons">

@@ -480,9 +480,19 @@ const autocomplete = document.getElementById('autocomplete');
 // Deduplicate COUNTRIES by name for autocomplete
 const uniqueCountries = COUNTRIES.filter((c, i, arr) => arr.findIndex(x => x.name === c.name) === i);
 
+let acIndex = -1;
+
+function acSetIndex(i) {
+    const items = autocomplete.querySelectorAll('.autocomplete-item');
+    items.forEach(el => el.classList.remove('active'));
+    acIndex = Math.max(-1, Math.min(i, items.length - 1));
+    if (acIndex >= 0) items[acIndex].classList.add('active');
+}
+
 countryInput.addEventListener('input', () => {
     const val = countryInput.value.toLowerCase().trim();
     autocomplete.innerHTML = '';
+    acIndex = -1;
     if (!val) return;
 
     uniqueCountries
@@ -493,16 +503,27 @@ countryInput.addEventListener('input', () => {
             item.className   = 'autocomplete-item';
             item.textContent = c.name;
             item.addEventListener('click', () => {
-                countryInput.value = c.name;
+                countryInput.value     = c.name;
                 autocomplete.innerHTML = '';
+                acIndex = -1;
             });
             autocomplete.appendChild(item);
         });
 });
 
+countryInput.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); acSetIndex(acIndex + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); acSetIndex(acIndex - 1); }
+    else if (e.key === 'Enter') {
+        const active = autocomplete.querySelector('.autocomplete-item.active');
+        if (active) { e.preventDefault(); countryInput.value = active.textContent; autocomplete.innerHTML = ''; acIndex = -1; }
+    }
+});
+
 document.addEventListener('click', e => {
     if (!countryInput.contains(e.target) && !autocomplete.contains(e.target)) {
         autocomplete.innerHTML = '';
+        acIndex = -1;
     }
 });
 
@@ -553,7 +574,7 @@ function submitGuess() {
 }
 
 document.getElementById('submitBtn').addEventListener('click', submitGuess);
-countryInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(); });
+countryInput.addEventListener('keydown', e => { if (e.key === 'Enter' && acIndex < 0) submitGuess(); });
 
 function showMsg(msg) {
     const old = document.querySelector('.globle-msg');

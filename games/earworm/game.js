@@ -38,7 +38,7 @@ let state = loadState();
 // AUDIO PLAYER
 // ============================================
 const audio       = document.getElementById('audioPlayer');
-audio.volume      = 0.35;
+audio.volume      = 0.26;
 const playBtn     = document.getElementById('playBtn');
 const clipLabel   = document.getElementById('clipSeconds');
 const audioNote   = document.getElementById('audioNote');
@@ -62,7 +62,7 @@ fetchPreviewUrl(todaySong.title, todaySong.artist).then(url => {
         previewUrl        = url;
         audio.preload     = 'auto';
         audio.src         = url;
-        audioNote.textContent  = '30-second preview via iTunes';
+        audioNote.textContent  = '';
         playBtn.disabled  = false;
     } else {
         audioNote.textContent = 'Audio unavailable for this song — guessing still works!';
@@ -113,23 +113,42 @@ playBtn.addEventListener('click', () => {
 const guessInput   = document.getElementById('guessInput');
 const autocomplete = document.getElementById('autocomplete');
 
+let acIndex = -1;
+
+function acSetIndex(i) {
+    const items = autocomplete.querySelectorAll('.autocomplete-item');
+    items.forEach(el => el.classList.remove('active'));
+    acIndex = Math.max(-1, Math.min(i, items.length - 1));
+    if (acIndex >= 0) items[acIndex].classList.add('active');
+}
+
 guessInput.addEventListener('input', () => {
     const val = guessInput.value.toLowerCase().trim();
     autocomplete.innerHTML = '';
+    acIndex = -1;
     if (!val) return;
-    const matches = SONGS.filter(s =>
+    SONGS.filter(s =>
         s.title.toLowerCase().includes(val) || s.artist.toLowerCase().includes(val)
-    ).slice(0, 6);
-    matches.forEach(song => {
+    ).slice(0, 6).forEach(song => {
         const item = document.createElement('div');
         item.className  = 'autocomplete-item';
         item.textContent = `${song.title} — ${song.artist}`;
         item.addEventListener('click', () => {
             guessInput.value = `${song.title} — ${song.artist}`;
             autocomplete.innerHTML = '';
+            acIndex = -1;
         });
         autocomplete.appendChild(item);
     });
+});
+
+guessInput.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); acSetIndex(acIndex + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); acSetIndex(acIndex - 1); }
+    else if (e.key === 'Enter') {
+        const active = autocomplete.querySelector('.autocomplete-item.active');
+        if (active) { e.preventDefault(); guessInput.value = active.textContent; autocomplete.innerHTML = ''; acIndex = -1; }
+    }
 });
 
 // ============================================
@@ -158,7 +177,7 @@ function submitGuess(skipped) {
 
 document.getElementById('submitBtn').addEventListener('click', () => submitGuess(false));
 document.getElementById('skipBtn').addEventListener('click',   () => submitGuess(true));
-guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(false); });
+guessInput.addEventListener('keydown', e => { if (e.key === 'Enter' && acIndex < 0) submitGuess(false); });
 document.addEventListener('click', e => {
     if (!guessInput.contains(e.target) && !autocomplete.contains(e.target))
         autocomplete.innerHTML = '';

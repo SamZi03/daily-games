@@ -30,16 +30,8 @@ const GAMES = [
         active: true
     },
     {
-        id: 'lyriclock',
-        title: 'LyricLock',
-        description: 'Guess the song from clues — duration, genre, year, album, artist revealed one by one.',
-        icon: '💡',
-        url: 'games/recall/index.html',
-        active: true
-    },
-    {
         id: 'lexilock',
-        title: 'LexiLock',
+        title: 'WordLock',
         description: 'Guess the hidden word in 6 tries. Choose from 3 to 7 letter words.',
         icon: '🔤',
         url: 'games/lexico/index.html',
@@ -121,12 +113,26 @@ function getPlayedToday() {
     return stored[getTodayString()] || [];
 }
 
+function getGameStreak(gameId) {
+    return JSON.parse(localStorage.getItem('gameStreak_' + gameId) || '{"count":0,"lastPlayed":""}');
+}
+
+function updateGameStreak(gameId) {
+    const today = getTodayString();
+    const data  = getGameStreak(gameId);
+    if (data.lastPlayed === today) return;
+    data.count      = (data.lastPlayed === getYesterdayString()) ? data.count + 1 : 1;
+    data.lastPlayed = today;
+    localStorage.setItem('gameStreak_' + gameId, JSON.stringify(data));
+}
+
 function markGamePlayed(gameId) {
     const today = getTodayString();
     const stored = JSON.parse(localStorage.getItem('playedGames') || '{}');
     if (!stored[today]) stored[today] = [];
     if (!stored[today].includes(gameId)) stored[today].push(gameId);
     localStorage.setItem('playedGames', JSON.stringify(stored));
+    updateGameStreak(gameId);
     updateStreak();
 }
 
@@ -152,21 +158,13 @@ const CARD_VISUALS = {
         <div class="cv-coverlock">
             <div class="cv-cover-art"></div>
         </div>`,
-    lyriclock: `
-        <div class="cv-lyriclock">
-            <div class="cv-lbar cv-lb-green"></div>
-            <div class="cv-lbar cv-lb-green"></div>
-            <div class="cv-lbar cv-lb-yellow"></div>
-            <div class="cv-lbar cv-lb-red"></div>
-            <div class="cv-lbar cv-lb-empty"></div>
-        </div>`,
     lexilock: `
         <div class="cv-lexilock">
-            <div class="cv-lt cv-lt-g">S</div>
-            <div class="cv-lt cv-lt-y">T</div>
+            <div class="cv-lt cv-lt-g">W</div>
+            <div class="cv-lt cv-lt-y">O</div>
             <div class="cv-lt cv-lt-e">R</div>
-            <div class="cv-lt cv-lt-g">E</div>
-            <div class="cv-lt cv-lt-e">K</div>
+            <div class="cv-lt cv-lt-g">D</div>
+            <div class="cv-lt cv-lt-e">S</div>
         </div>`,
     spelllock: `
         <div class="cv-spelllock">
@@ -208,7 +206,8 @@ function renderHomePage() {
         card.href    = game.active ? game.url : '#';
         card.className = `game-card${done ? ' played' : ''}${!game.active ? ' coming-soon' : ''}`;
 
-        const visual = CARD_VISUALS[game.id] || '';
+        const visual  = CARD_VISUALS[game.id] || '';
+        const gStreak = getGameStreak(game.id).count;
         card.innerHTML = `
             <div class="card-top">
                 <div class="card-title">${game.title}</div>
@@ -216,6 +215,7 @@ function renderHomePage() {
                 ${!game.active ? '<span class="card-soon-badge">Soon</span>' : ''}
             </div>
             <div class="card-visual">${visual}</div>
+            ${gStreak > 0 ? `<div class="card-streak">🔥 ${gStreak} day streak</div>` : ''}
         `;
 
         if (!game.active) {
@@ -240,3 +240,16 @@ function resetForTesting() {
 }
 
 renderHomePage();
+
+// ============================================
+// SITE FOOTER — injected on pages without a hardcoded footer
+// ============================================
+(function injectFooter() {
+    if (document.querySelector('.site-footer')) return; // already present
+    const isGame = window.location.pathname.includes('/games/');
+    const base   = isGame ? '../../' : '';
+    const footer = document.createElement('footer');
+    footer.className = 'site-footer';
+    footer.innerHTML = `&copy; ${new Date().getFullYear()} Daily Streaks &nbsp;&middot;&nbsp; <a href="${base}legal.html">Privacy &amp; Legal</a>`;
+    document.body.appendChild(footer);
+}());
