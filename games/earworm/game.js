@@ -154,10 +154,22 @@ guessInput.addEventListener('keydown', e => {
 // ============================================
 // SUBMIT GUESS
 // ============================================
+function showEarlockMsg(msg) {
+    const el = document.getElementById('earlockMsg');
+    if (!el) return;
+    el.textContent = msg;
+    setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 2000);
+}
+
 function submitGuess(skipped) {
     if (state.gameOver) return;
     const raw = guessInput.value.trim();
     if (!skipped && !raw) return;
+
+    if (!skipped) {
+        const matched = SONGS.some(s => raw === `${s.title} — ${s.artist}`);
+        if (!matched) { showEarlockMsg('Please select a song from the list'); return; }
+    }
 
     const correct = !skipped && raw.toLowerCase().includes(todaySong.title.toLowerCase());
     state.guesses.push({ text: skipped ? '(skipped)' : raw, correct, skipped });

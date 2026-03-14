@@ -227,21 +227,19 @@ function submitGuess() {
 
     saveState(activeLen);
 
-    // Render grid with the submitted row showing blank cells (no letter, no colour yet)
+    // Render grid (letters + colours applied), then strip colours to animate them in
     renderGrid();
     const grid  = document.getElementById('lexicoGrid');
     const cells = [...grid.children].slice(rowIdx * activeLen, (rowIdx + 1) * activeLen);
 
-    // Clear text from the submitted row — letters revealed one at a time during flip
-    cells.forEach(cell => { cell.textContent = ''; });
+    // Remove colours so cells show letter only — colour revealed during flip
+    cells.forEach(cell => cell.classList.remove('correct', 'present', 'absent'));
 
     cells.forEach((cell, i) => {
         setTimeout(() => {
             cell.classList.add('flipping');
             playFlipTick();
-            // Mid-flip: show letter + colour
             setTimeout(() => {
-                cell.textContent = guess[i].toUpperCase();
                 cell.classList.remove('flipping');
                 cell.classList.add(result[i]);
             }, 150);

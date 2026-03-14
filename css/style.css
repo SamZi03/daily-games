@@ -1292,6 +1292,13 @@ h1, h2, h3, h4 {
     margin-bottom: 8px;
     min-height: 18px;
 }
+.earlock-msg {
+    text-align: center;
+    font-size: 13px;
+    color: var(--red);
+    margin-top: 8px;
+    min-height: 18px;
+}
 
 /* =====================
    SPELLING BEE GAME
