@@ -12,6 +12,18 @@ const WORDS = {
 const LENGTHS      = [3, 4, 5, 6, 7];
 const MAX_GUESSES  = 6;
 
+let validating = false;
+
+async function isValidWord(word) {
+    try {
+        const res  = await fetch(`https://api.datamuse.com/words?sp=${word}&max=1`);
+        const data = await res.json();
+        return data.length > 0 && data[0].word.toLowerCase() === word.toLowerCase();
+    } catch {
+        return true; // allow if API unreachable — don't block gameplay
+    }
+}
+
 let activeLen = 5;
 let states    = {};
 
@@ -109,7 +121,7 @@ function buildKeyboard() {
 // ============================================
 function handleKey(key) {
     const s = states[activeLen];
-    if (s.gameOver) return;
+    if (s.gameOver || validating) return;
 
     if (key === '⌫' || key === 'Backspace') {
         s.currentGuess = s.currentGuess.slice(0, -1);
@@ -120,7 +132,7 @@ function handleKey(key) {
             showMessage('Word must be ' + activeLen + ' letters');
             return;
         }
-        submitGuess();
+        validateAndSubmit();
     } else if (/^[a-zA-Z]$/.test(key)) {
         if (s.currentGuess.length < activeLen) {
             s.currentGuess += key.toLowerCase();
@@ -138,6 +150,18 @@ document.addEventListener('keydown', e => {
 // ============================================
 // SUBMIT
 // ============================================
+async function validateAndSubmit() {
+    validating = true;
+    showMessage('Checking...');
+    const valid = await isValidWord(states[activeLen].currentGuess);
+    validating = false;
+    if (!valid) {
+        showMessage('Not a valid word');
+        return;
+    }
+    submitGuess();
+}
+
 function submitGuess() {
     const s      = states[activeLen];
     const target = getTodayWord(activeLen);
