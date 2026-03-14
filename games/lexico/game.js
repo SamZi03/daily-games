@@ -12,16 +12,75 @@ const WORDS = {
 const LENGTHS      = [3, 4, 5, 6, 7];
 const MAX_GUESSES  = 6;
 
-let validating = false;
+let VALID_WORDS = null;
+let validating  = false;
 
-async function isValidWord(word) {
+fetch('words.txt')
+    .then(r => r.text())
+    .then(txt => {
+        VALID_WORDS = new Set(
+            txt.split(/[\s,]+/).map(w => w.trim().toLowerCase()).filter(w => w.length >= 3)
+        );
+    });
+
+async function checkAndSubmit(word) {
+    const w = word.toLowerCase();
+    // Fast path — word is in local list
+    if (VALID_WORDS && VALID_WORDS.has(w)) { submitGuess(); return; }
+    // Slow path — check Free Dictionary API
+    validating = true;
+    showMessage('Checking...');
+    let valid = false;
     try {
-        const res  = await fetch(`https://api.datamuse.com/words?sp=${word}&max=1`);
-        const data = await res.json();
-        return data.length > 0 && data[0].word.toLowerCase() === word.toLowerCase();
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${w}`);
+        valid = res.ok;
     } catch {
-        return true; // allow if API unreachable — don't block gameplay
+        valid = !VALID_WORDS; // local list not loaded yet — allow; loaded but word absent — reject
     }
+    validating = false;
+    if (!valid) { showMessage('Not a real word'); return; }
+    showMessage('');
+    submitGuess();
+}
+
+// ============================================
+// AUDIO
+// ============================================
+let audioCtx = null;
+function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+function playTone(freq, dur, type, vol) {
+    try {
+        const ctx = getCtx(), osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = freq; osc.type = type || 'sine';
+        gain.gain.setValueAtTime(vol || 0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+    } catch(e) {}
+}
+function playKey()       { playTone(600, 0.05, 'sine', 0.15); }
+function playBack()      { playTone(300, 0.06, 'sine', 0.12); }
+function playFlipTick()  { playTone(700, 0.06, 'sine', 0.18); }
+function playCorrect() {
+    try {
+        const ctx  = getCtx();
+        const now  = ctx.currentTime;
+        [[880,0],[1108,0.04],[1318,0.1]].forEach(([freq, delay]) => {
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.type = 'sine'; osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.28, now + delay);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 1.2);
+            osc.start(now + delay); osc.stop(now + delay + 1.3);
+        });
+    } catch(e) {}
+}
+function playWrong()     {
+    playTone(280, 0.14, 'sawtooth', 0.2);
+    setTimeout(() => playTone(220, 0.2, 'sawtooth', 0.2), 120);
 }
 
 let activeLen = 5;
@@ -125,6 +184,7 @@ function handleKey(key) {
 
     if (key === '⌫' || key === 'Backspace') {
         s.currentGuess = s.currentGuess.slice(0, -1);
+        playBack();
         saveState(activeLen);
         renderGrid();
     } else if (key === 'ENTER' || key === 'Enter') {
@@ -132,10 +192,11 @@ function handleKey(key) {
             showMessage('Word must be ' + activeLen + ' letters');
             return;
         }
-        validateAndSubmit();
+        checkAndSubmit(s.currentGuess);
     } else if (/^[a-zA-Z]$/.test(key)) {
         if (s.currentGuess.length < activeLen) {
             s.currentGuess += key.toLowerCase();
+            playKey();
             saveState(activeLen);
             renderGrid();
         }
@@ -150,42 +211,50 @@ document.addEventListener('keydown', e => {
 // ============================================
 // SUBMIT
 // ============================================
-async function validateAndSubmit() {
-    validating = true;
-    showMessage('Checking...');
-    const valid = await isValidWord(states[activeLen].currentGuess);
-    validating = false;
-    if (!valid) {
-        showMessage('Not a valid word');
-        return;
-    }
-    submitGuess();
-}
 
 function submitGuess() {
     const s      = states[activeLen];
     const target = getTodayWord(activeLen);
     const guess  = s.currentGuess;
     const result = checkGuess(guess, target);
+    const rowIdx = s.guesses.length;
 
     s.guesses.push({ word: guess, result });
     s.currentGuess = '';
 
-    if (guess === target) {
-        s.gameOver = true;
-        s.won      = true;
-    } else if (s.guesses.length >= MAX_GUESSES) {
-        s.gameOver = true;
-        s.won      = false;
-    }
+    if (guess === target) { s.gameOver = true; s.won = true; }
+    else if (s.guesses.length >= MAX_GUESSES) { s.gameOver = true; s.won = false; }
 
     saveState(activeLen);
 
-    if (s.gameOver && LENGTHS.every(l => states[l].gameOver)) {
-        markGamePlayed('lexilock');
-    }
+    // Render grid with the submitted row showing blank cells (no letter, no colour yet)
+    renderGrid();
+    const grid  = document.getElementById('lexicoGrid');
+    const cells = [...grid.children].slice(rowIdx * activeLen, (rowIdx + 1) * activeLen);
 
-    render();
+    // Clear text from the submitted row — letters revealed one at a time during flip
+    cells.forEach(cell => { cell.textContent = ''; });
+
+    cells.forEach((cell, i) => {
+        setTimeout(() => {
+            cell.classList.add('flipping');
+            playFlipTick();
+            // Mid-flip: show letter + colour
+            setTimeout(() => {
+                cell.textContent = guess[i].toUpperCase();
+                cell.classList.remove('flipping');
+                cell.classList.add(result[i]);
+            }, 150);
+        }, i * 300);
+    });
+
+    const totalDelay = cells.length * 300 + 150;
+    setTimeout(() => {
+        if (s.won) playCorrect();
+        else if (s.gameOver) playWrong();
+        if (s.gameOver && LENGTHS.every(l => states[l].gameOver)) markGamePlayed('lexilock');
+        render();
+    }, totalDelay);
 }
 
 function showMessage(msg) {
