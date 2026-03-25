@@ -17,9 +17,21 @@
         <h2>🎵 EarLock</h2>
     </header>
 
+    <!-- Genre picker overlay -->
+    <div id="genrePicker" class="genre-picker-overlay" style="display:none;">
+        <div class="genre-picker-inner">
+            <h2 class="genre-picker-title">Choose 3 genres to play today</h2>
+            <p class="genre-picker-sub">You'll get one song per genre</p>
+            <div class="genre-grid" id="genreGrid"></div>
+            <button class="btn btn-primary genre-confirm-btn" id="genreConfirmBtn" disabled>Choose 3 genres</button>
+        </div>
+    </div>
+
     <div class="game-container heardle-container">
 
         <h1 class="game-big-title">EarLock</h1>
+
+        <div class="earlock-genre-tabs" id="genreTabs"></div>
 
         <div class="heardle-guess-rows" id="guessRows"></div>
 
