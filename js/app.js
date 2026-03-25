@@ -60,6 +60,22 @@ const GAMES = [
         icon: '🔍',
         url: 'games/clueless/index.html',
         active: true
+    },
+    {
+        id: 'grouplock',
+        title: 'GroupLock',
+        description: 'Find four groups of four. One wrong guess and you lose a life — 4 mistakes and it\'s over.',
+        icon: '🔗',
+        url: 'games/connections/index.html',
+        active: true
+    },
+    {
+        id: 'shapelock',
+        title: 'ShapeLock',
+        description: 'Guess the country from its silhouette. Each wrong guess shows distance and direction.',
+        icon: '🗺️',
+        url: 'games/worldle/index.html',
+        active: true
     }
 ];
 
@@ -184,6 +200,18 @@ const CARD_VISUALS = {
         <div class="cv-cluelock">
             <span class="cv-clue-search">🔍</span>
             <div class="cv-clue-tempbar"></div>
+        </div>`,
+    grouplock: `
+        <div class="cv-grouplock">
+            <div class="cv-gl-row" style="background:#f9df6d"></div>
+            <div class="cv-gl-row" style="background:#a0c35a"></div>
+            <div class="cv-gl-row" style="background:#b0c4ef"></div>
+            <div class="cv-gl-row" style="background:#ba81c5"></div>
+        </div>`,
+    shapelock: `
+        <div class="cv-shapelock">
+            <span class="cv-shape-icon">🗺️</span>
+            <div class="cv-shape-bar"><div class="cv-shape-fill"></div></div>
         </div>`,
 };
 

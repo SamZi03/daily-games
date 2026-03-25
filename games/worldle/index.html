@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShapeLock - Streaks</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="stylesheet" href="../../css/style.css?v=5">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🗺️ ShapeLock</h2>
+    </header>
+
+    <div class="game-container shape-container">
+        <h1 class="game-big-title">ShapeLock</h1>
+        <p class="game-subtitle">Guess the country from its silhouette</p>
+
+        <div class="shape-silhouette-wrap">
+            <svg id="shapeSvg" viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"></svg>
+            <p class="shape-loading" id="shapeLoading">Loading shape...</p>
+        </div>
+
+        <div class="shape-guess-rows" id="guessRows"></div>
+
+        <div id="inputSection">
+            <div class="guess-input-wrap">
+                <input type="text" class="guess-input" id="countryInput"
+                    placeholder="Type a country..." autocomplete="off">
+            </div>
+            <div class="autocomplete-dropdown" id="autocomplete"></div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="submitBtn">Submit</button>
+            </div>
+        </div>
+
+        <div id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+    <script src="../../js/app.js?v=3"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

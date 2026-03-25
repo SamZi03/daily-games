@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupLock - Streaks</title>
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="stylesheet" href="../../css/style.css?v=5">
+</head>
+<body class="game-page">
+
+    <header class="game-header">
+        <a href="../../index.html" class="back-btn">← Back</a>
+        <h2>🔗 GroupLock</h2>
+    </header>
+
+    <div class="game-container conn-container">
+        <h1 class="game-big-title">GroupLock</h1>
+        <p class="game-subtitle">Find four groups of four</p>
+
+        <div id="solvedRows"></div>
+
+        <div class="conn-grid" id="tileGrid"></div>
+
+        <p class="conn-msg" id="groupMsg"></p>
+
+        <div class="conn-mistakes">
+            <span class="conn-mistakes-label">Mistakes remaining:</span>
+            <div class="conn-dots" id="mistakeDots"></div>
+        </div>
+
+        <div class="conn-actions">
+            <button class="btn conn-btn-secondary" id="shuffleBtn">Shuffle</button>
+            <button class="btn conn-btn-secondary" id="deselectBtn">Deselect all</button>
+            <button class="btn btn-primary conn-submit" id="submitBtn" disabled>Submit</button>
+        </div>
+
+        <div id="resultBox" style="display:none;"></div>
+    </div>
+
+    <script src="../../js/app.js?v=3"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
