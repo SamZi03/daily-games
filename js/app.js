@@ -23,9 +23,9 @@ const GAMES = [
     },
     {
         id: 'coverlock',
-        title: 'CoverLock',
-        description: 'Guess the song from its album artwork. The cover gets clearer with each guess.',
-        icon: '🎨',
+        title: 'LensLock',
+        description: 'Identify the blurred album cover, country flag, or brand logo. Each wrong guess reveals more.',
+        icon: '🔍',
         url: 'games/cover/index.html',
         active: true
     },

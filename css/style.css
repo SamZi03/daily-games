@@ -1122,6 +1122,44 @@ h1, h2, h3, h4 {
 }
 
 /* =====================
+   LENSLOCK TABS
+   ===================== */
+.lenslock-tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.lenslock-tab {
+    height: 38px;
+    padding: 0 20px;
+    background: var(--tile);
+    border: none;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.lenslock-tab.active       { background: var(--text);  color: var(--bg); }
+.lenslock-tab.done-correct { background: var(--green);  color: #fff; }
+.lenslock-tab.done-wrong   { background: #2a2a2a;        color: var(--muted); }
+
+/* Flag image (landscape ratio) */
+.lenslock-flag-img {
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+}
+
+/* =====================
    COVER SPECIFIC
    ===================== */
 .cover-image-wrap {

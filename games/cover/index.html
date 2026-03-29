@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoverLock - Streaks</title>
+    <title>LensLock - Streaks</title>
     <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://api.fontshare.com">
-    <link rel="stylesheet" href="../../css/style.css?v=4">
+    <link rel="stylesheet" href="../../css/style.css?v=5">
 </head>
 <body class="game-page">
 
     <header class="game-header">
         <a href="../../index.html" class="back-btn">← Back</a>
-        <h2>🎨 CoverLock</h2>
+        <h2>🔍 LensLock</h2>
     </header>
 
     <div class="game-container">
-        <h1 class="game-big-title">CoverLock</h1>
-        <p class="game-subtitle">Guess the artist from the album cover</p>
+        <h1 class="game-big-title">LensLock</h1>
+        <p class="game-subtitle">Identify the blurred image</p>
+
+        <div class="lenslock-tab-bar" id="lenstabBar"></div>
 
         <div class="cover-image-wrap">
-            <div class="cover-placeholder" id="coverWrap">🎵</div>
+            <div id="imageWrap"><div class="cover-placeholder">?</div></div>
         </div>
 
         <div class="cover-clues" id="coverClues"></div>
@@ -33,7 +35,7 @@
         <div id="inputSection">
             <div class="guess-input-wrap">
                 <input type="text" class="guess-input" id="guessInput"
-                    placeholder="Type an artist name..." autocomplete="off">
+                    placeholder="Type a guess..." autocomplete="off">
             </div>
             <div class="autocomplete-dropdown" id="autocomplete"></div>
             <div class="action-buttons">
@@ -47,6 +49,7 @@
 
     <script src="../../js/app.js?v=3"></script>
     <script src="../../js/sidebar.js"></script>
+    <script src="data.js"></script>
     <script src="game.js"></script>
 </body>
 </html>
